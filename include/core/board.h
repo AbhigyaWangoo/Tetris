@@ -11,23 +11,23 @@
 
 namespace tetris {
 /**
- * Representation of a board
+ * Representation of a Board
  */
-class board {
+class Board {
+  const int kBoardSize = 6;
+  const int kUserBlockCount = 3;
  public:
   /**
-   * Generates the blocks for the player to use
-   * 
-   * @param number_of_blocks to provide to the player 
+   * Generates the blocks for the player to use 
    */
-  void GenerateUserBlocks(size_t number_of_blocks);
+  void GenerateUserBlocks();
   
   /**
    * Places the given block in a certain area
    * 
    * @param block to place 
-   * @param top_left coordinate of the board for the block placement
-   * @param bottom_right coordinate of the board for block placement
+   * @param top_left coordinate of the Board for the block placement
+   * @param bottom_right coordinate of the Board for block placement
    */
   void PlaceBlock(Block &block, ci::vec2 &top_left, ci::vec2 &bottom_right);
   
@@ -39,7 +39,7 @@ class board {
   bool HasLostGame();
   
   /**
-   * Updates board to remove rows and columns, check for game's end, and new block placements
+   * Updates Board to remove rows and columns, check for game's end, and new block placements
    */
   void UpdateBoard();
  private:
@@ -63,7 +63,7 @@ class board {
   bool CheckFullRow(size_t row, bool is_horizontal);
   
   /**
-   * Removes provided row from the board
+   * Removes provided row from the Board
    * 
    * @param row to remove
    * @param is_horizontal determines whether its a row or column to check

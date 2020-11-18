@@ -54,6 +54,12 @@ class Block {
    */
   const glm::vec2& getBlockCoordinate() const;
 
+  /**
+   * Initializes the block according to the Board's size
+   * 
+   * @param board_size to initialize with 
+   */
+  void InitializeBlock(int board_size, bool is_square);
  private:
   ci::vec2 block_shape_;
   ci::vec2 block_coordinate_;
