@@ -32,17 +32,17 @@ class Board {
   void PlaceBlock(Block &block, ci::vec2 &top_left, ci::vec2 &bottom_right);
   
   /**
+   * Updates Board to remove rows and columns, check for game's end, and new block placements
+   */
+  void UpdateBoard();
+ private:
+  /**
    * Checks whether the player has lost the game, i.e cannot place any blocks down anymore
    * 
    * @return whether the user has lost or not 
    */
   bool HasLostGame();
   
-  /**
-   * Updates Board to remove rows and columns, check for game's end, and new block placements
-   */
-  void UpdateBoard();
- private:
   /**
    * Checks whether the block placement will overlap with other blocks
    * 
