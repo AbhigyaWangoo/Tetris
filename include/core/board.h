@@ -14,8 +14,6 @@ namespace tetris {
  * Representation of a Board
  */
 class Board {
-  const int kBoardSize = 6;
-  const int kUserBlockCount = 3;
  public:
   /**
    * Generates the blocks for the player to use 
@@ -27,9 +25,8 @@ class Board {
    * 
    * @param block to place 
    * @param top_left coordinate of the Board for the block placement
-   * @param bottom_right coordinate of the Board for block placement
    */
-  void PlaceBlock(Block &block, ci::vec2 &top_left, ci::vec2 &bottom_right);
+  void PlaceBlock(Block &block, ci::vec2 &top_left);
   
   /**
    * Updates Board to remove rows and columns, check for game's end, and new block placements
@@ -48,10 +45,9 @@ class Board {
    * 
    * @param block to place 
    * @param top_left coordinate of the block placement to check for 
-   * @param bottom_right coordinate of the block placement to check for
    * @return whether the placement will overlap or not
    */
-  bool CheckOverlap(Block &block, ci::vec2 top_left, ci::vec2 bottom_right);
+  bool CheckOverlap(Block &block, ci::vec2 top_left);
   
   /**
    * Checks whether a row is full or not 
@@ -69,8 +65,8 @@ class Board {
    * @param is_horizontal determines whether its a row or column to check
    */
   void RemoveRow(size_t row, bool is_horizontal);
-  
-  std::vector<Block> blocks_;
+
+  std::vector<std::vector<bool>> board_;
   std::vector<Block> user_blocks_;
 };
 

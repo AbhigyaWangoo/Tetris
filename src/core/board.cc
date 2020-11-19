@@ -17,42 +17,77 @@ void Board::GenerateUserBlocks() {
   }
 }
 
-void Board::PlaceBlock(Block& block, glm::vec2& top_left,
-                       glm::vec2& bottom_right) {
-  if (CheckOverlap(block, top_left, bottom_right)) {
+void Board::PlaceBlock(Block& block, glm::vec2& top_left) {
+  if (CheckOverlap(block, top_left)) {
     throw std::runtime_error("The block is overlapping with others");
   } else {
     // Place the block in the appropriate area within the vector<Block>
+    for (size_t i = top_left.x; i < block.getBlockShape().x; i++) {
+      board_[top_left.x][i] = false;
+    }
+
+    for (size_t i = top_left.y; i < block.getBlockShape().y; i++) {
+      board_[i][top_left.y] = false;
+    }
+
+    // user_blocks_.erase(block); TODO remove block from user blocks after
+    // "placing" it down
   }
 }
 
 void Board::UpdateBoard() {
-  
+  if (HasLostGame()) {
+    throw std::overflow_error("Game over");
+  }
+
+  for (size_t i = 0; i < kBoardSize; i++) {
+    if (CheckFullRow(i, true)) {
+      RemoveRow(i, true);
+    } else if (CheckFullRow(i, false)) {
+      RemoveRow(i, false);
+    }
+  }
 }
 
 bool Board::HasLostGame() {
-  return false;
-}
-bool Board::CheckOverlap(Block& block, ci::vec2 top_left,
-                         ci::vec2 bottom_right) {
-  return false;
-}
-bool Board::CheckFullRow(size_t row, bool is_horizontal) {
+  // Find out whether the existing board is positioned so that the user can't
+  // place any blocks down
   return false;
 }
 
-void Board::RemoveRow(size_t row, bool is_horizontal) {
-  if (is_horizontal) {
-    for (size_t x_coordinate = 0; x_coordinate < kBoardSize; x_coordinate++) {
-      // check each block per coordinate to see whether the block is overlapping
-      // or not. Then, change the block into 2 new blocks or 1 reduced size
-      // block, depends upon the orientation
+bool Board::CheckOverlap(Block& block, ci::vec2 top_left) {
+  for (size_t i = top_left.x; i < block.getBlockShape().x; i++) {
+    if (board_[top_left.x][i]) {
+      return false;
     }
-  } else {
-    for (size_t y_coordinate = 0; y_coordinate < kBoardSize; y_coordinate++) {
-      // check each block per coordinate to see whether the block is overlapping
-      // or not. Then, change the block into 2 new blocks or 1 reduced size
-      // block, depends upon the orientation
+  }
+
+  for (size_t i = top_left.y; i < block.getBlockShape().y; i++) {
+    if (board_[i][top_left.y]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+bool Board::CheckFullRow(size_t row, bool is_horizontal) {
+  for (size_t i = 0; i < kBoardSize; i++) {
+    if ((!board_[row][i] && is_horizontal) ||
+        (!board_[i][row] && !is_horizontal)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+void Board::RemoveRow(size_t row, bool is_horizontal) {
+  for (size_t i = 0; i < kBoardSize; i++) {
+    if (is_horizontal) {
+      board_[row][i] = false;
+    } else {
+      board_[i][row] = false;
     }
   }
 }

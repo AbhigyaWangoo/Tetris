@@ -17,6 +17,8 @@ namespace tetris {
 /**
  * Representation of a particle
  */
+const int kBoardSize = 6;
+const int kUserBlockCount = 3;
 class Block {
  public:
   /**
@@ -25,13 +27,6 @@ class Block {
    * @return whether the current block is valid or not
    */
   bool IsValidBlock() const;
-
-  /**
-   * Determines whether the block's shape is a square or not
-   *
-   * @return whether the block is a square
-   */
-  bool isSquare() const;
 
   /**
    * Sets the block's square status
@@ -57,9 +52,9 @@ class Block {
   /**
    * Initializes the block according to the Board's size
    * 
-   * @param board_size to initialize with 
+   * @param is_square to specify whether it's angled or a square shape 
    */
-  void InitializeBlock(int board_size, bool is_square);
+  void InitializeBlock(bool is_square);
  private:
   ci::vec2 block_shape_;
   ci::vec2 block_coordinate_;
