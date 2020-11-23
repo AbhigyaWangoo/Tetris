@@ -5,12 +5,13 @@ namespace tetris {
         void TetrisApp::draw() {
             ci::Color8u background_color(0, 0, 0);
             ci::gl::clear(background_color);
-            setWindowSize(kWindowSize, kWindowSize);
+            setWindowSize(kWindowSize, kWindowSize * 1.13);
 
+            canvas_.RenderBoard();
 
             ci::gl::drawStringCentered(
                     "Tetris",
-                    glm::vec2(kWindowSize / 2, kWindowSize / 10), ci::Color("white"));
+                    glm::vec2(kWindowSize / 2, kWindowSize / 11), ci::Color("white"));
         }
 
         void TetrisApp::setup() {

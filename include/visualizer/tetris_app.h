@@ -3,6 +3,7 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "tetris_canvas.h"
 
 namespace tetris {
     namespace visualizer {
@@ -27,6 +28,7 @@ namespace tetris {
              */
             void update() override;
         private:
+         tetris::visualizer::BoardCanvas canvas_;
         };
 
     }  // namespace visualizer
