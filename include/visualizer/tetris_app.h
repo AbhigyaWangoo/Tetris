@@ -7,7 +7,7 @@
 
 namespace tetris {
     namespace visualizer {
-        const double kWindowSize = 600;
+        const static double kWindowSize = 600;
         /**
         * Simulates a set of particles bouncing around in a box
         */

@@ -15,6 +15,8 @@ namespace tetris {
  */
 class Board {
  public:
+  
+  Board();
   /**
    * Generates the blocks for the player to use 
    */
@@ -32,6 +34,10 @@ class Board {
    * Updates Board to remove rows and columns, check for game's end, and new block placements
    */
   void UpdateBoard();
+
+  const std::vector<std::vector<bool>> &getBoard() const;
+  const std::vector<Block> &getUserBlocks() const;
+
  private:
   /**
    * Checks whether the player has lost the game, i.e cannot place any blocks down anymore
@@ -47,7 +53,7 @@ class Board {
    * @param top_left coordinate of the block placement to check for 
    * @return whether the placement will overlap or not
    */
-  bool CheckOverlap(Block &block, ci::vec2 top_left);
+  bool IsOverlapping(Block &block, ci::vec2 top_left);
   
   /**
    * Checks whether a row is full or not 

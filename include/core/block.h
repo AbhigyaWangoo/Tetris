@@ -55,6 +55,9 @@ class Block {
    * @param is_square to specify whether it's angled or a square shape 
    */
   void InitializeBlock(bool is_square);
+  
+  
+  bool isSquare() const;
  private:
   ci::vec2 block_shape_;
   ci::vec2 block_coordinate_;

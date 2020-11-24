@@ -11,23 +11,22 @@ void Board::GenerateUserBlocks() {
 
   if (user_blocks_.empty()) {
     for (size_t i = 0; i < kUserBlockCount; i++) {
-      current_block.InitializeBlock(kBoardSize, false);
+      current_block.InitializeBlock(false);
       user_blocks_.push_back(current_block);
     }
   }
 }
 
 void Board::PlaceBlock(Block& block, glm::vec2& top_left) {
-  if (CheckOverlap(block, top_left)) {
-    throw std::runtime_error("The block is overlapping with others");
+  if (!IsOverlapping(block, top_left)) {
+    throw std::runtime_error("The block is overlapping with others"); // TODO Add out of bounds check
   } else {
-    // Place the block in the appropriate area within the vector<Block>
-    for (size_t i = top_left.x; i < block.getBlockShape().x; i++) {
-      board_[top_left.x][i] = false;
+    for (size_t i = top_left.x; i <= block.getBlockShape().x; i++) {
+        board_[top_left.x][i] = true;
     }
 
-    for (size_t i = top_left.y; i < block.getBlockShape().y; i++) {
-      board_[i][top_left.y] = false;
+    for (size_t i = top_left.y; i <= block.getBlockShape().y; i++) {
+      board_[i][top_left.y] = true;
     }
 
     // user_blocks_.erase(block); TODO remove block from user blocks after
@@ -55,7 +54,7 @@ bool Board::HasLostGame() {
   return false;
 }
 
-bool Board::CheckOverlap(Block& block, ci::vec2 top_left) {
+bool Board::IsOverlapping(Block& block, ci::vec2 top_left) {
   for (size_t i = top_left.x; i < block.getBlockShape().x; i++) {
     if (board_[top_left.x][i]) {
       return false;
@@ -67,7 +66,10 @@ bool Board::CheckOverlap(Block& block, ci::vec2 top_left) {
       return false;
     }
   }
-
+  
+  if (top_left.x + block.getBlockShape().x > kBoardSize || top_left.y + block.getBlockShape().y > kBoardSize)
+    return false;
+  
   return true;
 }
 
@@ -90,6 +92,24 @@ void Board::RemoveRow(size_t row, bool is_horizontal) {
       board_[i][row] = false;
     }
   }
+}
+const std::vector<std::vector<bool>>& Board::getBoard() const {
+  return board_;
+}
+const std::vector<Block>& Board::getUserBlocks() const {
+  return user_blocks_;
+}
+
+Board::Board() {
+  std::vector<bool> row;
+
+  for (size_t j = 0; j < kBoardSize ; j++) {
+    row.push_back(false);
+  }
+  
+  for (size_t i = 0; i < kBoardSize ; i++) {
+    board_.push_back(row);
+  } // TODO Optimize
 }
 
 }  // namespace tetris

@@ -34,21 +34,21 @@ namespace tetris {
 
           /**
            * Renders an individual block
-           * 
-           * @param block to render 
+           *  
+           * @param increment specifies the square widths
            * @param top_left coordinate to place the rendering
            * @param bottom_right coordinate to place the rendering 
            */
-          void RenderBlock(tetris::Block &block, ci::vec2 top_left, ci::vec2 bottom_right);
+          void RenderBlocks(size_t increment, ci::vec2 top_left);
           
           /**
            * Renders the grid for the player to play the game on
            * 
            * @param top_left coordinate to place the rendering
            * @param bottom_right coordinate to place the rendering
-           * @param dimensions to verify the amount of boxes in the grid
+           * @param increment to verify the amount of boxes in the grid
            */
-          void RenderGrid(ci::vec2 top_left, ci::vec2 bottom_right);
+          void RenderGrid(size_t increment, ci::vec2 top_left, ci::vec2 bottom_right);
         };
     }
 }
