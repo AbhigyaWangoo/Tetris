@@ -15,7 +15,7 @@
 
 namespace tetris {
 /**
- * Representation of a particle
+ * Representation of a block
  */
 const int kBoardSize = 6;
 const int kUserBlockCount = 3;
@@ -56,8 +56,13 @@ class Block {
    */
   void InitializeBlock(bool is_square);
   
-  
+  /**
+   * Determines whether the block is in square shape or an L-shape
+   * 
+   * @return boolean for whichever style the block is in 
+   */
   bool isSquare() const;
+ 
  private:
   ci::vec2 block_shape_;
   ci::vec2 block_coordinate_;

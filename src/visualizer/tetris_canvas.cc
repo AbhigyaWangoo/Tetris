@@ -25,11 +25,6 @@ void BoardCanvas::RenderUserBlocks() {
 }
 
 void BoardCanvas::RenderBlocks(size_t increment, ci::vec2 top_left) {
-  Block sample_block;
-  sample_block.InitializeBlock(false);
-  ci::vec2 sample_position = ci::vec2(0, 0);
-  
-  board_.PlaceBlock(sample_block, sample_position);
   
   if (board_.getBoard().empty())
     return;
@@ -62,6 +57,12 @@ void BoardCanvas::RenderGrid(size_t increment, ci::vec2 top_left,
     ci::gl::drawLine(ci::vec2(top_left.x, top_left.y + i * increment),
                      ci::vec2(bottom_right.x, top_left.y + i * increment));
   }
+}
+
+BoardCanvas::BoardCanvas(Board &board) {
+  board_ = board;
+}
+BoardCanvas::BoardCanvas() {
 }
 
 }  // namespace visualizer

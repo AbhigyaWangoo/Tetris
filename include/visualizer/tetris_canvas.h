@@ -20,6 +20,9 @@ namespace tetris {
          */
         class BoardCanvas {
          public:
+          BoardCanvas();
+          
+          BoardCanvas(tetris::Board &board);
           /**
            * Renders Current board with highlighted tiles 
            */

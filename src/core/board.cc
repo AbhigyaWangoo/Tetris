@@ -19,14 +19,18 @@ void Board::GenerateUserBlocks() {
 
 void Board::PlaceBlock(Block& block, glm::vec2& top_left) {
   if (!IsOverlapping(block, top_left)) {
-    throw std::runtime_error("The block is overlapping with others"); // TODO Add out of bounds check
+    throw std::runtime_error("The block is overlapping with others");
   } else {
     for (size_t i = top_left.x; i <= block.getBlockShape().x; i++) {
-        board_[top_left.x][i] = true;
-    }
-
-    for (size_t i = top_left.y; i <= block.getBlockShape().y; i++) {
+      board_[top_left.x][i] = true;
       board_[i][top_left.y] = true;
+      
+      if (block.isSquare()) {
+        for (size_t j = 0; j <= i;j++) {
+          board_[top_left.x + j][i] = true;
+          board_[i][top_left.y + j] = true;
+        }
+      }
     }
 
     // user_blocks_.erase(block); TODO remove block from user blocks after
