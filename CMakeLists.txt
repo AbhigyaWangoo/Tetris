@@ -50,15 +50,16 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES src/core/block.cc
-                            src/core/board.cc)
+list(APPEND CORE_SOURCE_FILES src/core/block.cc 
+                              src/core/board.cc 
+                              src/core/user_board.cc)
 
 list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} src/visualizer/tetris_app.cc)
 list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} src/visualizer/tetris_canvas.cc)
 
 list(APPEND TEST_FILES tests/board_placement_test.cc)
 list(APPEND TEST_FILES tests/particle_feature_test.cc)
-list(APPEND TEST_FILES tests/histogram_test.cc)
+list(APPEND TEST_FILES tests/block_test.cc)
 
 ci_make_app(
         APP_NAME tetris

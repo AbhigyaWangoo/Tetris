@@ -6,24 +6,15 @@
 
 namespace tetris {
 
-void Board::GenerateUserBlocks() {
-  Block current_block;
-
-  if (user_blocks_.empty()) {
-    for (size_t i = 0; i < kUserBlockCount; i++) {
-      current_block.InitializeBlock(false);
-      user_blocks_.push_back(current_block);
-    }
-  }
-}
-
-void Board::PlaceBlock(Block& block, glm::vec2& top_left) {
+void Board::PlaceBlock(const Block& block, glm::vec2& top_left) {
   if (!IsOverlapping(block, top_left)) {
     throw std::runtime_error("The block is overlapping with others");
   } else {
     for (size_t i = top_left.x; i <= block.getBlockShape().x; i++) {
       board_[top_left.x][i] = true;
-      board_[i][top_left.y] = true;
+      for (size_t j = top_left.y; j <= block.getBlockShape().y; j++) {
+        board_[j][top_left.y] = true;
+      }
       
       if (block.isSquare()) {
         for (size_t j = 0; j <= i;j++) {
@@ -58,7 +49,7 @@ bool Board::HasLostGame() {
   return false;
 }
 
-bool Board::IsOverlapping(Block& block, ci::vec2 top_left) {
+bool Board::IsOverlapping(const Block& block, ci::vec2 top_left) {
   for (size_t i = top_left.x; i < block.getBlockShape().x; i++) {
     if (board_[top_left.x][i]) {
       return false;
@@ -99,9 +90,6 @@ void Board::RemoveRow(size_t row, bool is_horizontal) {
 }
 const std::vector<std::vector<bool>>& Board::getBoard() const {
   return board_;
-}
-const std::vector<Block>& Board::getUserBlocks() const {
-  return user_blocks_;
 }
 
 Board::Board() {

@@ -5,6 +5,7 @@
 #ifndef IDEAL_GAS_PARTICLE_H
 #define IDEAL_GAS_PARTICLE_H
 
+#import <cstddef>
 #include <glm/glm.hpp>
 #include <string>
 
@@ -62,10 +63,18 @@ class Block {
    * @return boolean for whichever style the block is in 
    */
   bool isSquare() const;
- 
+
+  /**
+   * Sets the block's incremental value to the one provided
+   * 
+   * @param increment to specify the increment size 
+   */
+  void setIncrement(const size_t& increment);
+  
  private:
   ci::vec2 block_shape_;
-  ci::vec2 block_coordinate_;
+  ci::vec2 block_top_left_;
+  size_t increment;
   bool is_square_;
 };
 

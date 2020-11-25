@@ -23,21 +23,24 @@ bool Block::IsValidBlock() const {
   return false;
 }
 const glm::vec2& Block::getBlockCoordinate() const {
-  return block_coordinate_;
+  return block_top_left_;
 }
 
 void Block::InitializeBlock(bool is_square) {
-  size_t x = rand() % kBoardSize - 1;
+  size_t x = rand() % kBoardSize;
   size_t y;
   
   if (is_square) {
     y = x;  
   } else {
-    y = rand() % kBoardSize - 1;
+    y = rand() % kBoardSize;
   }
   
   block_shape_ = ci::vec2(x,y);
   is_square_ = is_square;
+}
+void Block::setIncrement(const size_t& increment) {
+  Block::increment = increment;
 }
 
 }
