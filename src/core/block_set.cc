@@ -2,31 +2,31 @@
 // Created by Abhigya Wangoo on 10/31/20.
 //
 
-#include <core/block.h>
+#include <core/block_set.h>
 
 namespace tetris {
 
-bool Block::isSquare() const {
+bool BlockSet::isSquare() const {
   return is_square_;
 }
 
-void Block::setIsSquare(bool isSquare) {
+void BlockSet::setIsSquare(bool isSquare) {
   is_square_ = isSquare;
 }
 
-const glm::vec2& Block::getBlockShape() const {
+const glm::vec2& BlockSet::getBlockShape() const {
   return block_shape_;
 }
 
-bool Block::IsValidBlock() const {
+bool BlockSet::IsValidBlock() const {
   //TODO IMPLEMENT
   return false;
 }
-const glm::vec2& Block::getBlockCoordinate() const {
+const glm::vec2& BlockSet::getBlockCoordinate() const {
   return block_top_left_;
 }
 
-void Block::InitializeBlock(bool is_square) {
+void BlockSet::InitializeBlock(bool is_square) {
   size_t x = rand() % kBoardSize;
   size_t y;
   
@@ -39,8 +39,8 @@ void Block::InitializeBlock(bool is_square) {
   block_shape_ = ci::vec2(x,y);
   is_square_ = is_square;
 }
-void Block::setIncrement(const size_t& increment) {
-  Block::increment = increment;
+void BlockSet::setIncrement(const size_t& increment) {
+  BlockSet::increment = increment;
 }
 
 }

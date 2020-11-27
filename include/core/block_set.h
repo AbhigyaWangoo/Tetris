@@ -5,7 +5,7 @@
 #ifndef IDEAL_GAS_PARTICLE_H
 #define IDEAL_GAS_PARTICLE_H
 
-#import <cstddef>
+#include <cstddef>
 #include <glm/glm.hpp>
 #include <string>
 
@@ -20,7 +20,8 @@ namespace tetris {
  */
 const int kBoardSize = 6;
 const int kUserBlockCount = 3;
-class Block {
+
+class BlockSet {
  public:
   /**
    * Determines whether the current block can be created

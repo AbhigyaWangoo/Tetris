@@ -6,7 +6,7 @@
 
 namespace tetris {
 
-void Board::PlaceBlock(const Block& block, glm::vec2& top_left) {
+void Board::PlaceBlock(const BlockSet& block, glm::vec2& top_left) {
   if (!IsOverlapping(block, top_left)) {
     throw std::runtime_error("The block is overlapping with others");
   } else {
@@ -49,7 +49,7 @@ bool Board::HasLostGame() {
   return false;
 }
 
-bool Board::IsOverlapping(const Block& block, ci::vec2 top_left) {
+bool Board::IsOverlapping(const BlockSet& block, ci::vec2 top_left) {
   for (size_t i = top_left.x; i < block.getBlockShape().x; i++) {
     if (board_[top_left.x][i]) {
       return false;

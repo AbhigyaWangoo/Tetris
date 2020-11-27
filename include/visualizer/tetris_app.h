@@ -7,7 +7,8 @@
 
 namespace tetris {
     namespace visualizer {
-        const static double kWindowSize = 600;
+        const static double kWindowWidth = 600;
+        const static double kWindowLength = 678;
         /**
         * Simulates a set of particles bouncing around in a box
         */
@@ -27,7 +28,11 @@ namespace tetris {
              * Updates each frame of the app
              */
             void update() override;
+            
+            void keyDown(ci::app::KeyEvent event) override;
+            
         private:
+         tetris::Board board_;
          tetris::visualizer::BoardCanvas canvas_;
         };
 

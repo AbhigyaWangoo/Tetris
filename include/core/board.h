@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "block.h"
+#include "block_set.h"
 
 namespace tetris {
 /**
@@ -23,7 +23,7 @@ class Board {
    * @param block to place 
    * @param top_left coordinate of the Board for the block placement
    */
-  void PlaceBlock(const Block &block, ci::vec2 &top_left);
+  void PlaceBlock(const BlockSet &block, ci::vec2 &top_left);
   
   /**
    * Updates Board to remove rows and columns, check for game's end, and new block placements
@@ -31,7 +31,8 @@ class Board {
   void UpdateBoard();
 
   const std::vector<std::vector<bool>> &getBoard() const;
-  const std::vector<Block> &getUserBlocks() const;
+  
+  const std::vector<BlockSet> &getUserBlocks() const;
 
  private:
   /**
@@ -48,7 +49,7 @@ class Board {
    * @param top_left coordinate of the block placement to check for 
    * @return whether the placement will overlap or not
    */
-  bool IsOverlapping(const Block &block, ci::vec2 top_left);
+  bool IsOverlapping(const BlockSet &block, ci::vec2 top_left);
   
   /**
    * Checks whether a row is full or not 

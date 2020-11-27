@@ -5,9 +5,9 @@
 #ifndef TETRIS_USER_BOARD_H
 #define TETRIS_USER_BOARD_H
 
-#include "block.h"
-
 #include <vector>
+
+#include "block_set.h"
 
 namespace tetris{
 /**
@@ -15,10 +15,19 @@ namespace tetris{
  */
 class UserBoard {
  public:
+  UserBoard();
   /**
    * Generates the blocks for the player to use 
    */
   void GenerateUserBlocks();
+
+  /**
+   * Finds the grid values of the user blocks
+   * 
+   * @return grid of the user blocks 
+   */
+  const std::vector<std::vector<bool>> &getGrid() const;
+
  private:
   /**
    * Adds a block to the visual representation of the user's blocks
@@ -27,9 +36,9 @@ class UserBoard {
    * @param count to indicate the position of the block on the grid
    * @param increment to indicate the size of the blocks
    */
-  void AddBlockToGrid(Block &block, size_t count, size_t increment);
+  void AddBlockToGrid(BlockSet &block, size_t count, ci::vec2 &top_left);
   
-  std::vector<Block> user_blocks_;
+  std::vector<BlockSet> user_blocks_;
   std::vector<std::vector<bool>> grid_;
 };
 
