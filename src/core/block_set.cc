@@ -27,13 +27,13 @@ const glm::vec2& BlockSet::getBlockCoordinate() const {
 }
 
 void BlockSet::InitializeBlock(bool is_square) {
-  size_t x = rand() % kBoardSize;
+  size_t x = rand() % kBoardSize / 2;
   size_t y;
   
   if (is_square) {
     y = x;  
   } else {
-    y = rand() % kBoardSize;
+    y = rand() % kBoardSize / 2;
   }
   
   block_shape_ = ci::vec2(x,y);

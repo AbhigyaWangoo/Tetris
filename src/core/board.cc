@@ -7,13 +7,13 @@
 namespace tetris {
 
 void Board::PlaceBlock(const BlockSet& block, glm::vec2& top_left) {
-  if (!IsOverlapping(block, top_left)) {
+  if (IsOverlapping(block, top_left)) {
     throw std::runtime_error("The block is overlapping with others");
   } else {
-    for (size_t i = top_left.x; i <= block.getBlockShape().x; i++) {
-      board_[top_left.x][i] = true;
-      for (size_t j = top_left.y; j <= block.getBlockShape().y; j++) {
-        board_[j][top_left.y] = true;
+    for (size_t i = top_left.x; i <= top_left.x + block.getBlockShape().x; i++) {
+      board_[top_left.y][i] = true;
+      for (size_t j = top_left.y; j <= top_left.y + block.getBlockShape().y; j++) {
+        board_[j][top_left.x] = true;
       }
       
       if (block.isSquare()) {
@@ -21,7 +21,7 @@ void Board::PlaceBlock(const BlockSet& block, glm::vec2& top_left) {
           board_[top_left.x + j][i] = true;
           board_[i][top_left.y + j] = true;
         }
-      }
+      } // TODO RID THIS NESTED LOOP
     }
 
     // user_blocks_.erase(block); TODO remove block from user blocks after
@@ -50,22 +50,22 @@ bool Board::HasLostGame() {
 }
 
 bool Board::IsOverlapping(const BlockSet& block, ci::vec2 top_left) {
+  if (top_left.x + block.getBlockShape().x > kBoardSize || top_left.y + block.getBlockShape().y > kBoardSize || top_left.x < 0 || top_left.y < 0)
+    return true;
+  
   for (size_t i = top_left.x; i < block.getBlockShape().x; i++) {
     if (board_[top_left.x][i]) {
-      return false;
+      return true;
     }
   }
 
   for (size_t i = top_left.y; i < block.getBlockShape().y; i++) {
     if (board_[i][top_left.y]) {
-      return false;
+      return true;
     }
   }
   
-  if (top_left.x + block.getBlockShape().x > kBoardSize || top_left.y + block.getBlockShape().y > kBoardSize)
-    return false;
-  
-  return true;
+  return false;
 }
 
 bool Board::CheckFullRow(size_t row, bool is_horizontal) {

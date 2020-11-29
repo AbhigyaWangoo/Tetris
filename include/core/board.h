@@ -31,9 +31,6 @@ class Board {
   void UpdateBoard();
 
   const std::vector<std::vector<bool>> &getBoard() const;
-  
-  const std::vector<BlockSet> &getUserBlocks() const;
-
  private:
   /**
    * Checks whether the player has lost the game, i.e cannot place any blocks down anymore
