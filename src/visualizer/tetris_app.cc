@@ -6,9 +6,10 @@ void TetrisApp::draw() {
   ci::Color8u background_color(0, 0, 0);
   ci::gl::clear(background_color);
   setWindowSize(kWindowWidth, kWindowLength);
+  canvas_ = BoardCanvas(board_);
   
   canvas_.RenderBoard();
-
+  
   ci::gl::drawStringCentered("Tetris",
                              glm::vec2(kWindowWidth / 2, kWindowLength / 11),
                              ci::Color("white"));

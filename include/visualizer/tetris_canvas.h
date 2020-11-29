@@ -44,7 +44,6 @@ namespace tetris {
           
          private:
           tetris::Board board_;
-          tetris::UserBoard user_blocks_;
           
           /**
            * Renders an individual block

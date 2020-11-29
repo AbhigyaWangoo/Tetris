@@ -34,7 +34,9 @@ void Board::UpdateBoard() {
   if (HasLostGame()) {
     throw std::overflow_error("Game over");
   }
-
+  
+  user_board_.GenerateUserBlocks();
+  
   for (size_t i = 0; i < kBoardSize; i++) {
     if (CheckFullRow(i, true)) {
       RemoveRow(i, true);
@@ -103,6 +105,10 @@ Board::Board() {
   for (size_t i = 0; i < kBoardSize ; i++) {
     board_.push_back(row);
   } // TODO Optimize
+}
+
+const std::vector<std::vector<bool>>& Board::getUserBoard() const {
+  return user_board_.getGrid();
 }
 
 }  // namespace tetris

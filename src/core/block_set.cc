@@ -39,8 +39,5 @@ void BlockSet::InitializeBlock(bool is_square) {
   block_shape_ = ci::vec2(x,y);
   is_square_ = is_square;
 }
-void BlockSet::setIncrement(const size_t& increment) {
-  BlockSet::increment = increment;
-}
 
 }

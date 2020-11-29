@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "block_set.h"
+#include "user_board.h"
 
 namespace tetris {
 /**
@@ -29,8 +30,20 @@ class Board {
    * Updates Board to remove rows and columns, check for game's end, and new block placements
    */
   void UpdateBoard();
-
+  
+  /**
+   * Returns the board available on the grid
+   * 
+   * @return board of booleans
+   */
   const std::vector<std::vector<bool>> &getBoard() const;
+  
+  /**
+   * Returns the users' available shaded blocks
+   * 
+   * @return user_blocks_' boolean grid 
+   */
+  const std::vector<std::vector<bool>> &getUserBoard() const;
  private:
   /**
    * Checks whether the player has lost the game, i.e cannot place any blocks down anymore
@@ -66,6 +79,7 @@ class Board {
   void RemoveRow(size_t row, bool is_horizontal);
 
   std::vector<std::vector<bool>> board_;
+  tetris::UserBoard user_board_;
 };
 
 }
