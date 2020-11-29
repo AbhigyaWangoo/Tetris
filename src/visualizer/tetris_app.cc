@@ -9,7 +9,7 @@ void TetrisApp::draw() {
   canvas_ = BoardCanvas(board_);
   
   canvas_.RenderBoard();
-  
+
   ci::gl::drawStringCentered("Tetris",
                              glm::vec2(kWindowWidth / 2, kWindowLength / 11),
                              ci::Color("white"));
@@ -18,11 +18,13 @@ void TetrisApp::draw() {
 void TetrisApp::setup() {
   tetris::BlockSet block_set;
   block_set.InitializeBlock(false);
-  ci::vec2 coord = ci::vec2(1,1);
-  
+  ci::vec2 coord = ci::vec2(1, 1);
+
   board_.PlaceBlock(block_set, coord);
-  
-  canvas_ = BoardCanvas(board_); // TODO We need a way to update the board_ in the canvas with the board with the block above every time
+
+  canvas_ = BoardCanvas(
+      board_);  // TODO We need a way to update the board_ in the canvas with
+                // the board with the block above every time
 }
 
 void TetrisApp::update() {

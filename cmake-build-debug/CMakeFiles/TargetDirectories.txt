@@ -1,0 +1,4 @@
+/Users/abhigyawangoo/CLionProjects/Cinder/my-projects/final-project-AbhiWangoo/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/abhigyawangoo/CLionProjects/Cinder/my-projects/final-project-AbhiWangoo/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/abhigyawangoo/CLionProjects/Cinder/my-projects/final-project-AbhiWangoo/cmake-build-debug/CMakeFiles/tetris-test.dir
+/Users/abhigyawangoo/CLionProjects/Cinder/my-projects/final-project-AbhiWangoo/cmake-build-debug/CMakeFiles/tetris.dir

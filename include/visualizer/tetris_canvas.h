@@ -16,50 +16,55 @@
 #include "cinder/gl/gl.h"
 
 namespace tetris {
-    namespace visualizer {
-        /**
-         * The visualizer for the ideal gas simulation
-         */
-        class BoardCanvas {
-         public:
-          BoardCanvas();
-          
-          /**
-           * TODO
-           * @param board 
-           */
-          BoardCanvas(tetris::Board &board);
-          /**
-           * Renders Current board with highlighted tiles 
-           */
-          void RenderBoard();
-          
-          /**
-           * Renders all current blocks available to the user
-           * 
-           * @param top_left coordinate of the board so the user blocks are displayed correctly
-           * @param bottom_right coordinate of the board so the user blocks are displayed correctly
-           */
-          void RenderUserBlocks();
-          
-         private:
-          tetris::Board board_;
-          
-          /**
-           * Renders an individual block
-           *  
-           * @param top_left coordinate to place the pre_rendered_grid
-           * @param bottom_right coordinate to place the pre_rendered_grid
-           * @param pre_rendered_grid provides the pixel values to render
-           */
-          void RenderBlocks(ci::vec2 &top_left, ci::vec2 &bottom_right, const std::vector<std::vector<bool>> &pre_rendered_grid);
-          
-          /**
-           * Renders the grid for the player to play the game on
-           */
-          void RenderGrid();
-        };
-    }
-}
+namespace visualizer {
+/**
+ * The visualizer for the ideal gas simulation
+ */
+class BoardCanvas {
+ public:
+  BoardCanvas();
 
-#endif //IDEAL_GAS_IDEAL_GAS_CANVAS_H
+  /**
+   * Constructor to initialize canvas with a specific board
+   *
+   * @param board to perform all renderings on
+   */
+  BoardCanvas(tetris::Board &board);
+
+  /**
+   * Renders Current board with highlighted tiles
+   */
+  void RenderBoard();
+
+ private:
+  tetris::Board board_;
+          
+  /**
+   * Renders all current blocks available to the user
+   *
+   * @param top_left coordinate of the board so the user blocks are displayed
+   * correctly
+   * @param bottom_right coordinate of the board so the user blocks are
+   * displayed correctly
+   */
+  void RenderUserBlocks();
+
+  /**
+   * Renders an individual block
+   *
+   * @param top_left coordinate to place the shaded_grid
+   * @param bottom_right coordinate to place the shaded_grid
+   * @param shaded_grid provides the pixel values to render
+   */
+  void RenderBlocks(ci::vec2 &top_left, ci::vec2 &bottom_right,
+                    const std::vector<std::vector<bool>> &shaded_grid);
+
+  /**
+   * Renders the grid for the player to play the game on
+   */
+  void RenderGrid();
+};
+}  // namespace visualizer
+}  // namespace tetris
+
+#endif  // IDEAL_GAS_IDEAL_GAS_CANVAS_H
