@@ -4,7 +4,7 @@
 
 #include "visualizer/tetris_canvas.h"
 
-#include <visualizer/tetris_app.h>
+#include <visualizer/tetris_app.h> // TODO FIGURE OUT HOW TO REMOVE THIS
 
 namespace tetris {
 namespace visualizer {
@@ -21,9 +21,7 @@ void BoardCanvas::RenderBoard() {
   ci::vec2 bottom_right = kBottomRight;
 
   RenderGrid();
-
   RenderBlocks(top_left, bottom_right, board_.getBoard());
-
   RenderUserBlocks();
 }
 
@@ -40,14 +38,14 @@ void BoardCanvas::RenderUserBlocks() {
 void BoardCanvas::RenderBlocks(
     ci::vec2 &top_left, ci::vec2 &bottom_right,
     const std::vector<std::vector<bool>>
-        &pre_rendered_grid) {  // todo rename pre_rendered_grid
+        &shaded_grid) { 
 
   size_t increment_x = (bottom_right.x - top_left.x) / kBoardSize;
   size_t increment_y = (bottom_right.y - top_left.y) / kBoardSize;
 
-  for (size_t i = 0; i < pre_rendered_grid.size(); i++) {
-    for (size_t j = 0; j < pre_rendered_grid[i].size(); j++) {
-      if (pre_rendered_grid[i][j]) {
+  for (size_t i = 0; i < shaded_grid.size(); i++) {
+    for (size_t j = 0; j < shaded_grid[i].size(); j++) {
+      if (shaded_grid[i][j]) {
         ci::vec2 block_top_left = ci::vec2(i * increment_x + top_left.x,
                                            j * increment_y + top_left.y);
         ci::vec2 block_bottom_right =

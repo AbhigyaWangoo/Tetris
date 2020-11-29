@@ -46,32 +46,32 @@ class BlockSet {
 
   /**
    * Gets the coordinate of the block
-   * 
-   * @return the coordinate of the block 
+   *
+   * @return the coordinate of the block
    */
   const glm::vec2& getBlockCoordinate() const;
 
   /**
    * Initializes the block according to the Board's size
-   * 
-   * @param is_square to specify whether it's angled or a square shape 
+   *
+   * @param is_square to specify whether it's angled or a square shape
    */
   void InitializeBlock(bool is_square);
-  
+
   /**
    * Determines whether the block is in square shape or an L-shape
-   * 
-   * @return boolean for whichever style the block is in 
+   *
+   * @return boolean for whichever style the block is in
    */
   bool isSquare() const;
 
   /**
    * Sets the block's incremental value to the one provided
-   * 
-   * @param increment to specify the increment size 
+   *
+   * @param increment to specify the increment size
    */
   void setIncrement(const size_t& increment);
-  
+
  private:
   ci::vec2 block_shape_;
   ci::vec2 block_top_left_;

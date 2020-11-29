@@ -23,21 +23,21 @@ TEST_CASE("BlockSet initializations") {
   SECTION("No blocks generated if there are already 3") {
     user_board.GenerateUserBlocks();
     user_board.GenerateUserBlocks();
-    
+
     passing_condition = user_board.getUserBlocks().size() == 3;
     REQUIRE(passing_condition);
   }
 
   SECTION("No blocks generated if there aren't 3") {
     user_board.GenerateUserBlocks();
-    
+
     tetris::Board board;
-    glm::vec2 coordinate = glm::vec2(0,0);
-    
+    glm::vec2 coordinate = glm::vec2(0, 0);
+
     board.PlaceBlock(user_board.getUserBlocks().front(), coordinate);
 
     user_board.GenerateUserBlocks();
-    
+
     passing_condition = user_board.getUserBlocks().size() == 2;
     REQUIRE(passing_condition);
   }
@@ -67,7 +67,7 @@ TEST_CASE("Placing blocks") {
 
     block.InitializeBlock(false);
     new_block.InitializeBlock(false);
-    
+
     ci::vec2 coordinate = ci::vec2(0, 0);
     ci::vec2 new_coordinate = ci::vec2(block.getBlockShape().x + 1, 0);
 
@@ -78,7 +78,7 @@ TEST_CASE("Placing blocks") {
                         board.getBoard()[block.getBlockShape().x][0] &&
                         board.getBoard()[0][block.getBlockShape().y] &&
                         board.getBoard()[block.getBlockShape().x + 1][0];
-    
+
     REQUIRE(passing_condition);
   }
 
