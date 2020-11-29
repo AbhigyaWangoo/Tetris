@@ -19,6 +19,28 @@ TEST_CASE("BlockSet initializations") {
     passing_condition = user_board.getUserBlocks().size() == 3;
     REQUIRE(passing_condition);
   }
+
+  SECTION("No blocks generated if there are already 3") {
+    user_board.GenerateUserBlocks();
+    user_board.GenerateUserBlocks();
+    
+    passing_condition = user_board.getUserBlocks().size() == 3;
+    REQUIRE(passing_condition);
+  }
+
+  SECTION("No blocks generated if there aren't 3") {
+    user_board.GenerateUserBlocks();
+    
+    tetris::Board board;
+    glm::vec2 coordinate = glm::vec2(0,0);
+    
+    board.PlaceBlock(user_board.getUserBlocks().front(), coordinate);
+
+    user_board.GenerateUserBlocks();
+    
+    passing_condition = user_board.getUserBlocks().size() == 2;
+    REQUIRE(passing_condition);
+  }
 }
 
 TEST_CASE("Placing blocks") {

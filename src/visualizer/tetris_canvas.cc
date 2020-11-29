@@ -12,37 +12,34 @@ namespace visualizer {
 BoardCanvas::BoardCanvas(Board &board) {
   board_ = board;
 }
+
 BoardCanvas::BoardCanvas() {
 }
 
 void BoardCanvas::RenderBoard() {
-  ci::vec2 top_left = ci::vec2(tetris::visualizer::kWindowWidth / 6,
-                               tetris::visualizer::kWindowWidth / 6);
-  ci::vec2 bottom_right = ci::vec2(tetris::visualizer::kWindowWidth * 5 / 6,
-                                   tetris::visualizer::kWindowWidth * 5 / 6);
-  size_t increment = (bottom_right.x - top_left.x) / kBoardSize;
+  ci::vec2 top_left = kTopLeft;
+  ci::vec2 bottom_right = kBottomRight;
 
-  RenderGrid(increment, top_left, bottom_right);
+  RenderGrid();
+  
+  RenderBlocks(top_left, bottom_right, board_.getBoard());
 
-  RenderBlocks(increment, top_left, bottom_right, board_.getBoard());
+  if (user_blocks_.getUserBlocks().empty()) {
+    user_blocks_.GenerateUserBlocks();
+  }
 
- // RenderUserBlocks(top_left, bottom_right, increment);
+  RenderUserBlocks();
 }
 
-void BoardCanvas::RenderUserBlocks(ci::vec2 &top_left, ci::vec2 &bottom_right,
-                                   size_t increment) {
+void BoardCanvas::RenderUserBlocks() {
   ci::vec2 user_blocks_top_left =
-      ci::vec2(top_left.x - increment / 2, increment / 2 + bottom_right.y);
-  ci::vec2 user_blocks_bottom_right = ci::vec2(bottom_right.x + increment / 2, kWindowLength - increment / 2);
-
-  user_blocks_.GenerateUserBlocks();
-
-  RenderBlocks(increment, user_blocks_top_left, user_blocks_bottom_right, user_blocks_.getGrid());
+      ci::vec2(kTopLeft.x - increment_ / 2, increment_ / 2 + kBottomRight.y);
+  ci::vec2 user_blocks_bottom_right = ci::vec2(kBottomRight.x + increment_ / 2, kWindowLength - increment_ / 2);
+  
+  RenderBlocks(user_blocks_top_left, user_blocks_bottom_right, user_blocks_.getGrid());
 }
 
-void BoardCanvas::RenderBlocks(
-    size_t increment, ci::vec2 &top_left, ci::vec2 &bottom_right,
-    const std::vector<std::vector<bool>> &pre_rendered_grid) { // todo rename pre_rendered_grid
+void BoardCanvas::RenderBlocks(ci::vec2 &top_left, ci::vec2 &bottom_right, const std::vector<std::vector<bool>> &pre_rendered_grid) { // todo rename pre_rendered_grid
   if (board_.getBoard().empty()) {
     return;
   } else {
@@ -61,23 +58,19 @@ void BoardCanvas::RenderBlocks(
             return;
           }
           
-          ci::gl::drawSolidRect(ci::Rectf(block_top_left, block_bottom_right),
-                                block_top_left, block_bottom_right);
-
-          //      Render a block in this grid spot
+          ci::gl::drawStrokedRect(ci::Rectf(block_top_left, block_bottom_right), 5);
         }
       }
     }
   }
 }
 
-void BoardCanvas::RenderGrid(size_t increment, ci::vec2 &top_left,
-                             ci::vec2 &bottom_right) {
+void BoardCanvas::RenderGrid() {
   for (size_t i = 0; i < kBoardSize + 1; i++) {
-    ci::gl::drawLine(ci::vec2(top_left.x + i * increment, top_left.y),
-                     ci::vec2(top_left.x + i * increment, bottom_right.y));
-    ci::gl::drawLine(ci::vec2(top_left.x, top_left.y + i * increment),
-                     ci::vec2(bottom_right.x, top_left.y + i * increment));
+    ci::gl::drawLine(ci::vec2(kTopLeft.x + i * increment_, kTopLeft.y),
+                     ci::vec2(kTopLeft.x + i * increment_, kBottomRight.y));
+    ci::gl::drawLine(ci::vec2(kTopLeft.x, kTopLeft.y + i * increment_),
+                     ci::vec2(kBottomRight.x, kTopLeft.y + i * increment_));
   }
 }
 

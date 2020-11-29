@@ -28,6 +28,13 @@ class UserBoard {
    */
   const std::vector<std::vector<bool>> &getGrid() const;
 
+  /**
+   * Returns the set of blocks belonging to the user
+   * 
+   * @return vector of BlockSets  
+   */
+  const std::vector<BlockSet> &getUserBlocks() const;
+
  private:
   /**
    * Adds a block to the visual representation of the user's blocks

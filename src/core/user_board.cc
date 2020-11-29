@@ -3,6 +3,7 @@
 //
 
 #include "core/user_board.h"
+
 void tetris::UserBoard::GenerateUserBlocks() {
   BlockSet current_block;
   ci::vec2 top_left_block;
@@ -18,36 +19,35 @@ void tetris::UserBoard::GenerateUserBlocks() {
     }
   }
 }
+
 void tetris::UserBoard::AddBlockToGrid(tetris::BlockSet& block, size_t count, ci::vec2 &top_left) {
 
-//  for (size_t i = top_left.x; i <= block.getBlockShape().x; i++) {
-//    board_[top_left.x][i] = true;
-//    for (size_t j = top_left.y; j <= block.getBlockShape().y; j++) {
-//      board_[j][top_left.y] = true;
-//    }
-//
-//    if (block.isSquare()) {
-//      for (size_t j = 0; j <= i;j++) {
-//        board_[top_left.x + j][i] = true;
-//        board_[i][top_left.y + j] = true;
-//      }
-//    }
-//  }
-  
-  for (size_t i = 0; i < block.getBlockShape().x; i++) {
-    grid_[top_left.x][i + count] = true;
-    for (size_t j = 0; j < block.getBlockShape().y; j++) {
-      grid_[j + count][top_left.y] = true;
+  while (top_left.x + block.getBlockShape().x > grid_.size()) {
+    std::vector<bool> row;
+    
+    for (size_t j = 0; j < kBoardSize; j++) {
+      row.push_back(false);
     }
 
-    if (block.isSquare()) {
-      for (size_t j = 0; j <= i;j++) {
-        grid_[top_left.x + j][i + count] = true;
-        grid_[i + count][top_left.y + j] = true;
-      }
-    }
+    grid_.push_back(row);
   }
+
+  for (size_t i = top_left.x; i <= top_left.x + block.getBlockShape().x; i++) {
+    grid_[i][top_left.x] = true; 
+  }
+
+  for (size_t j = top_left.y; j <= top_left.y + block.getBlockShape().y; j++) {
+    grid_[top_left.y][j] = true;
+  }
+  
+  if (block.isSquare()) {
+//    for (size_t j = 0; j <= i;j++) {
+//      grid_[top_left.x + j][i] = true;
+//      grid_[i][top_left.y + j] = true;
+//    }
+  } // TODO RID THIS NESTED LOOP, THIS PORTION IS A REPITITION, MOVE INTO FUNCTION
 }
+
 tetris::UserBoard::UserBoard() {
   std::vector<bool> row;
 
@@ -59,6 +59,10 @@ tetris::UserBoard::UserBoard() {
     grid_.push_back(row);
   } // TODO Optimize
 }
+
 const std::vector<std::vector<bool>>& tetris::UserBoard::getGrid() const {
   return grid_;
+}
+const std::vector<tetris::BlockSet>& tetris::UserBoard::getUserBlocks() const {
+  return user_blocks_;
 }

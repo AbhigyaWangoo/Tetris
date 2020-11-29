@@ -11,9 +11,9 @@ void Board::PlaceBlock(const BlockSet& block, glm::vec2& top_left) {
     throw std::runtime_error("The block is overlapping with others");
   } else {
     for (size_t i = top_left.x; i <= top_left.x + block.getBlockShape().x; i++) {
-      board_[top_left.y][i] = true;
+      board_[top_left.x][i] = true;
       for (size_t j = top_left.y; j <= top_left.y + block.getBlockShape().y; j++) {
-        board_[j][top_left.x] = true;
+        board_[j][top_left.y] = true;
       }
       
       if (block.isSquare()) {
@@ -24,6 +24,7 @@ void Board::PlaceBlock(const BlockSet& block, glm::vec2& top_left) {
       } // TODO RID THIS NESTED LOOP
     }
 
+    // user_board_.erase(std::remove(user_board_.begin(), user_board_.end(), block), user_board_.end());
     // user_blocks_.erase(block); TODO remove block from user blocks after
     // "placing" it down
   }
