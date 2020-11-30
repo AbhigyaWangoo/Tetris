@@ -17,7 +17,7 @@ void TetrisApp::draw() {
 
 void TetrisApp::setup() {
   tetris::BlockSet block_set;
-  block_set.InitializeBlock(false);
+  block_set.InitializeBlock();
   ci::vec2 coord = ci::vec2(1, 1);
 
   board_.PlaceBlock(block_set, coord);
@@ -34,6 +34,16 @@ void TetrisApp::update() {
     e.what();
   }
 }
+
+void TetrisApp::mouseDown(ci::app::MouseEvent event) {
+  if (!canvas_.HasSelectedBlock()) {
+    canvas_.SelectBlock(event);
+    // we're selecting a block rn
+  } else {
+    // we're placing a block rn
+  }
+}
+
 }  // namespace visualizer
 
 }  // namespace tetris

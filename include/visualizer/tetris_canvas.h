@@ -9,6 +9,7 @@
 
 #include <vector>
 
+#include "../../../../include/cinder/app/MouseEvent.h"
 #include "../core/board.h"
 #include "../core/user_board.h"
 #include "cinder/app/App.h"
@@ -36,9 +37,14 @@ class BoardCanvas {
    */
   void RenderBoard();
 
+  bool HasSelectedBlock() const;
+
+  void SelectBlock(cinder::app::MouseEvent event);
+
  private:
   tetris::Board board_;
-          
+  bool has_selected_block_;
+  
   /**
    * Renders all current blocks available to the user
    *
