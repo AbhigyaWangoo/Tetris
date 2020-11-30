@@ -72,6 +72,16 @@ void BoardCanvas::RenderGrid() {
                      ci::vec2(kBottomRight.x, kTopLeft.y + i * increment_));
   }
 }
+bool BoardCanvas::HasSelectedBlock() const {
+  return has_selected_block_;
+}
+void BoardCanvas::SelectBlock(cinder::app::MouseEvent event) {
+  ci::vec2 top_left = ci::vec2(floor(event.getX()), floor(event.getY()));
+  
+  if (top_left.x < board_.getBoard().size() || top_left.y < board_.getBoard()[0].size()) {
+    throw std::runtime_error("You haven't selected a block");
+  }
+}
 
 }  // namespace visualizer
 

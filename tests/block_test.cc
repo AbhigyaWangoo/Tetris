@@ -65,8 +65,10 @@ TEST_CASE("Placing blocks") {
   SECTION("Placing 2 adjacent blocks properly in spot") {
     tetris::BlockSet new_block;
 
-    block.InitializeBlock(false);
-    new_block.InitializeBlock(false);
+    block.InitializeBlock();
+    new_block.InitializeBlock(
+        
+        );
 
     ci::vec2 coordinate = ci::vec2(0, 0);
     ci::vec2 new_coordinate = ci::vec2(block.getBlockShape().x + 1, 0);

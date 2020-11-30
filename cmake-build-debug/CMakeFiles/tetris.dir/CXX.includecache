@@ -96,12 +96,6 @@ cinder/app/RendererGl.h
 cinder/gl/gl.h
 ../include/core/cinder/gl/gl.h
 
-../include/core/user_board.h
-vector
--
-block_set.h
-../include/core/block_set.h
-
 /Users/abhigyawangoo/CLionProjects/Cinder/include/boost/assert.hpp
 boost/config.hpp
 -
@@ -8140,7 +8134,7 @@ detail/setup.hpp
 detail/func_vector_relational.inl
 /Users/abhigyawangoo/CLionProjects/Cinder/include/glm/detail/func_vector_relational.inl
 
-/Users/abhigyawangoo/CLionProjects/Cinder/my-projects/final-project-AbhiWangoo/src/core/user_board.cc
-core/user_board.h
-/Users/abhigyawangoo/CLionProjects/Cinder/my-projects/final-project-AbhiWangoo/src/core/core/user_board.h
+/Users/abhigyawangoo/CLionProjects/Cinder/my-projects/final-project-AbhiWangoo/src/core/block_set.cc
+core/block_set.h
+-
 

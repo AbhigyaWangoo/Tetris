@@ -38,6 +38,13 @@ class TetrisApp : public ci::app::App {
    */
   void update() override;
 
+  /**
+   * Finds when the user clicks on a block
+   * 
+   * @param event representing the clicked area 
+   */
+  void mouseDown(ci::app::MouseEvent event) override;
+  
  private:
   tetris::Board board_;
   tetris::visualizer::BoardCanvas canvas_;

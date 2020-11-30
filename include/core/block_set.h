@@ -53,10 +53,8 @@ class BlockSet {
 
   /**
    * Initializes the block according to the Board's size
-   *
-   * @param is_square to specify whether it's angled or a square shape
    */
-  void InitializeBlock(bool is_square);
+  void InitializeBlock();
 
   /**
    * Determines whether the block is in square shape or an L-shape

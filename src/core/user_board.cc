@@ -12,7 +12,7 @@ void tetris::UserBoard::GenerateUserBlocks() {
     for (size_t i = 0; i < kUserBlockCount; i++) {
       top_left_block = ci::vec2(current_block.getBlockShape().x * i, 0);
 
-      current_block.InitializeBlock(false);
+      current_block.InitializeBlock();
       user_blocks_.push_back(current_block);
 
       AddBlockToGrid(current_block, i, top_left_block);
@@ -32,12 +32,12 @@ void tetris::UserBoard::AddBlockToGrid(tetris::BlockSet& block, size_t count,
     grid_.push_back(row);
   }
 
-  for (size_t i = top_left.x; i <= top_left.x + block.getBlockShape().x; i++) {
-    grid_[top_left.x + i][i] = true;
+  for (size_t i = 0; i < block.getBlockShape().y; i++) {
+    grid_[top_left.x][top_left.y + i] = true;
   }
 
-  for (size_t j = top_left.y; j <= top_left.y + block.getBlockShape().y; j++) {
-    grid_[j][top_left.y] = true;
+  for (size_t j = 0; j < block.getBlockShape().x; j++) {
+    grid_[top_left.x + j][top_left.y] = true;
   }
 
   if (block.isSquare()) {
@@ -46,7 +46,7 @@ void tetris::UserBoard::AddBlockToGrid(tetris::BlockSet& block, size_t count,
     //      grid_[i][top_left.y + j] = true;
     //    }
   }  // TODO RID THIS NESTED LOOP, THIS PORTION IS A REPITITION, MOVE INTO
-     // FUNCTION
+//     // FUNCTION
 }
 
 tetris::UserBoard::UserBoard() {

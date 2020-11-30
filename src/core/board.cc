@@ -10,20 +10,22 @@ void Board::PlaceBlock(const BlockSet& block, glm::vec2& top_left) {
   if (IsOverlapping(block, top_left)) {
     throw std::runtime_error("The block is overlapping with others");
   } else {
-    for (size_t i = top_left.x; i <= top_left.x + block.getBlockShape().x;
-         i++) {
-      board_[top_left.x][i] = true;
-      for (size_t j = top_left.y; j <= top_left.y + block.getBlockShape().y;
-           j++) {
-        board_[j][top_left.y] = true;
+    size_t count = 1;
+    
+    for (size_t i = 0; i < block.getBlockShape().y; i++) {
+      board_[top_left.x][top_left.y + i] = true;
+      
+      while (block.isSquare() && !board_[top_left.x + i][top_left.x + i]) {
+        board_[top_left.x + count][top_left.y + i] = true;
+        board_[top_left.x + i][top_left.y + count] = true;
+        count++;
       }
+      
+      count = 0;
+    }
 
-      if (block.isSquare()) {
-        for (size_t j = 0; j <= i; j++) {
-          board_[top_left.x + j][i] = true;
-          board_[i][top_left.y + j] = true;
-        }
-      }  // TODO RID THIS NESTED LOOP
+    for (size_t j = 0; j < block.getBlockShape().x; j++) {
+      board_[top_left.x + j][top_left.y] = true;
     }
 
     // user_board_.erase(std::remove(user_board_.begin(), user_board_.end(),
