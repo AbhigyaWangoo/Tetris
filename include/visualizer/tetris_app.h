@@ -45,6 +45,7 @@ class TetrisApp : public ci::app::App {
  private:
   tetris::Board board_;
   tetris::visualizer::BoardCanvas canvas_;
+  bool has_selected_block_ = false;
 };
 
 }  // namespace visualizer

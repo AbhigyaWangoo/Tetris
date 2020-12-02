@@ -73,9 +73,6 @@ void BoardCanvas::RenderGrid() {
                      ci::vec2(kBottomRight.x, kTopLeft.y + i * increment_));
   }
 }
-bool BoardCanvas::HasSelectedBlock() const {
-  return has_selected_block_;
-}
 
 void BoardCanvas::SelectBlock(ci::vec2 &position) {
   std::vector<BlockSet> user_blocksets = board_.getUserBoard().getUserBlocks();
@@ -88,19 +85,21 @@ void BoardCanvas::SelectBlock(ci::vec2 &position) {
   size_t count = 0;
   double increment =
       (user_board_bottom_right.x - user_board_top_left.x) / kUserBlockCount;
-  while (count < kUserBlockCount && !has_selected_block_) {
+  while (count < kUserBlockCount) {
     passing_horizontal_range =
         user_board_top_left.x + count * increment <= position.x &&
         user_board_top_left.x + count * increment +
-                user_blocksets[count].getBlockShape().x * increment >=
+                user_blocksets[count].getBlockShape().x * increment_ >=
             position.x;
 
     if (passing_horizontal_range && passing_vertical_range) {
       current_selected_block_ = user_blocksets[count];
-      has_selected_block_ = true;
+      break;
     } else if (!passing_horizontal_range && !passing_vertical_range) {
       throw std::runtime_error("You haven't selected a block");
     }
+
+    count++;
   }
 }
 const BlockSet &BoardCanvas::getCurrentBlock() const {

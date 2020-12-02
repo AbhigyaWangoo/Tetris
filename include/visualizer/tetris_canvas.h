@@ -37,8 +37,6 @@ class BoardCanvas {
    */
   void RenderBoard();
 
-  bool HasSelectedBlock() const;
-
   void SelectBlock(ci::vec2 &position);
 
   /**
@@ -58,7 +56,6 @@ class BoardCanvas {
  private:
   tetris::Board board_;
   tetris::BlockSet current_selected_block_;
-  bool has_selected_block_;
 
   /**
    * Renders all current blocks available to the user
