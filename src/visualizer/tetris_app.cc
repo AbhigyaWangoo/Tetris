@@ -37,16 +37,14 @@ void TetrisApp::update() {
 
 void TetrisApp::mouseDown(ci::app::MouseEvent event) {
   ci::vec2 position = event.getPos();
-  BlockSet current_block;
 
   try {
     if (!has_selected_block_) {
       canvas_.SelectBlock(position);
+      current_block_ = canvas_.getCurrentBlock();
       has_selected_block_ = true;
     } else {
-      current_block = canvas_.getCurrentBlock();
-      board_.PlaceBlock(current_block, position);
-      // we're placing a block rn
+      board_.PlaceBlock(current_block_, position);
     }
   } catch (std::runtime_error &error) {
     std::cout << error.what();

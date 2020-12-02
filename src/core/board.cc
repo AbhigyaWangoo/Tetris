@@ -7,6 +7,7 @@
 namespace tetris {
 
 void Board::PlaceBlock(BlockSet &block, glm::vec2& top_left) {
+  //glm::vec2 updated_position = ConvertBoardCoordinate(top_left);
   if (IsOverlapping(block, top_left)) {
     throw std::runtime_error("The block is overlapping with others");
   } else if (std::find(user_board_.getUserBlocks().begin(),

@@ -29,12 +29,13 @@ TEST_CASE("BlockSet initializations") {
   }
 
   SECTION("No blocks generated if there aren't 3") {
-    user_board.GenerateUserBlocks();
-
     tetris::Board board;
     glm::vec2 coordinate = glm::vec2(0, 0);
 
-    board.PlaceBlock(user_board.getUserBlocks().front(), coordinate);
+    board.UpdateBoard();
+
+    tetris::BlockSet front = board.getUserBoard().getUserBlocks().front();
+    board.PlaceBlock(front, coordinate);
 
     user_board.GenerateUserBlocks();
 
@@ -49,16 +50,17 @@ TEST_CASE("Placing blocks") {
   tetris::UserBoard user_board;
   bool passing_condition = false;
 
+  board.UpdateBoard();
+
   SECTION("Placing block properly in spot") {
-    user_board.GenerateUserBlocks();
-    block = user_board.getUserBlocks().front();
+    block = board.getUserBoard().getUserBlocks().front();
     ci::vec2 coordinate = ci::vec2(0, 0);
 
     board.PlaceBlock(block, coordinate);
 
     passing_condition = board.getBoard()[0][0] &&
-                        board.getBoard()[block.getBlockShape().x][0] &&
-                        board.getBoard()[0][block.getBlockShape().y];
+                        board.getBoard()[block.getBlockShape().x - 1][0] &&
+                        board.getBoard()[0][block.getBlockShape().y - 1];
     REQUIRE(passing_condition);
   }
 
@@ -66,20 +68,18 @@ TEST_CASE("Placing blocks") {
     tetris::BlockSet new_block;
 
     block.InitializeBlock();
-    new_block.InitializeBlock(
-        
-        );
+    new_block.InitializeBlock();
 
     ci::vec2 coordinate = ci::vec2(0, 0);
-    ci::vec2 new_coordinate = ci::vec2(block.getBlockShape().x + 1, 0);
+    ci::vec2 new_coordinate = ci::vec2(1, 1);
 
     board.PlaceBlock(block, coordinate);
     board.PlaceBlock(new_block, new_coordinate);
 
     passing_condition = board.getBoard()[0][0] &&
-                        board.getBoard()[block.getBlockShape().x][0] &&
-                        board.getBoard()[0][block.getBlockShape().y] &&
-                        board.getBoard()[block.getBlockShape().x + 1][0];
+                        board.getBoard()[block.getBlockShape().x - 1][0] &&
+                        board.getBoard()[0][block.getBlockShape().y - 1] &&
+                        board.getBoard()[1][1];
 
     REQUIRE(passing_condition);
   }
@@ -112,5 +112,18 @@ TEST_CASE("Placing blocks") {
     ci::vec2 coordinate = ci::vec2(tetris::kBoardSize + 1, 0);
 
     REQUIRE_THROWS_AS(board.PlaceBlock(block, coordinate), std::runtime_error);
+  }
+
+  SECTION("Placing a block removes it from the user_blocks_") {
+    board.UpdateBoard();
+
+    user_board = board.getUserBoard();
+    // TODO GENERATE GETTER FOR LIST OF BLOCKS IN THE USERBOARD
+    ci::vec2 coordinate = ci::vec2(0, 0);
+
+    board.PlaceBlock(block, coordinate);
+
+    passing_condition = !user_board.getGrid()[0][0];
+    REQUIRE(passing_condition);
   }
 }
