@@ -32,6 +32,11 @@ void tetris::UserBoard::AddBlockToGrid(tetris::BlockSet& block, size_t count,
     grid_.push_back(row);
   }
 
+//  ci::vec2 current_top_left = ci::vec2(user_blocks_top_left.x + count * block.getBlockShape().x * increment_, user_blocks_top_left.y);
+//  current_selected_block_.setBlockSetTopLeft(current_top_left);
+
+  block.setBlockSetTopLeft(top_left);
+
   for (size_t i = 0; i < block.getBlockShape().y; i++) {
     grid_[top_left.x][top_left.y + i] = true;
   }
@@ -66,4 +71,16 @@ const std::vector<std::vector<bool>>& tetris::UserBoard::getGrid() const {
 }
 const std::vector<tetris::BlockSet>& tetris::UserBoard::getUserBlocks() const {
   return user_blocks_;
+}
+void tetris::UserBoard::setTopLeft(const glm::vec2& topLeft) {
+  top_left_ = topLeft;
+}
+void tetris::UserBoard::setBottomRight(const glm::vec2& bottomRight) {
+  bottom_right_ = bottomRight;
+}
+const glm::vec2& tetris::UserBoard::getTopLeft() const {
+  return top_left_;
+}
+const glm::vec2& tetris::UserBoard::getBottomRight() const {
+  return bottom_right_;
 }

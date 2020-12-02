@@ -39,12 +39,27 @@ class BoardCanvas {
 
   bool HasSelectedBlock() const;
 
-  void SelectBlock(cinder::app::MouseEvent event);
+  void SelectBlock(ci::vec2 &position);
+
+  /**
+   * Assigns the current block according to the user
+   *
+   * @param block_set to set with
+   */
+  void setCurrentBlock(BlockSet &block_set);
+
+  /**
+   * Finds the current block being selected by the user
+   *
+   * @return current_user_block_
+   */
+  const BlockSet &getCurrentBlock() const;
 
  private:
   tetris::Board board_;
+  tetris::BlockSet current_selected_block_;
   bool has_selected_block_;
-  
+
   /**
    * Renders all current blocks available to the user
    *

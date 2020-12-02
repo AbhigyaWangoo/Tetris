@@ -7,16 +7,13 @@
 #include "tetris_canvas.h"
 
 namespace tetris {
-namespace visualizer {
-
 const static double kWindowWidth = 600;
 const static double kWindowLength = 678;
-const ci::vec2 kTopLeft = ci::vec2(tetris::visualizer::kWindowWidth / 6,
-                                   tetris::visualizer::kWindowWidth / 6);
-const ci::vec2 kBottomRight =
-    ci::vec2(tetris::visualizer::kWindowWidth * 5 / 6,
-             tetris::visualizer::kWindowWidth * 5 / 6);
+const ci::vec2 kTopLeft = ci::vec2(kWindowWidth / 6,kWindowWidth / 6);
+const ci::vec2 kBottomRight = ci::vec2(kWindowWidth * 5 / 6,kWindowWidth * 5 / 6);
 static size_t increment_ = (kBottomRight.x - kTopLeft.x) / kBoardSize;
+
+namespace visualizer {
 
 /**
  * Simulates a set of particles bouncing around in a box

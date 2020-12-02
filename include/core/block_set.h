@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 #include <string>
 
 #include "../../../../include/glm/vec2.hpp"
@@ -45,13 +46,6 @@ class BlockSet {
   const ci::vec2& getBlockShape() const;
 
   /**
-   * Gets the coordinate of the block
-   *
-   * @return the coordinate of the block
-   */
-  const glm::vec2& getBlockCoordinate() const;
-
-  /**
    * Initializes the block according to the Board's size
    */
   void InitializeBlock();
@@ -64,16 +58,31 @@ class BlockSet {
   bool isSquare() const;
 
   /**
-   * Sets the block's incremental value to the one provided
+   * Finds the top left coordinate of the block set
    *
-   * @param increment to specify the increment size
+   * @return the top left coordinate
    */
-  void setIncrement(const size_t& increment);
+  const glm::vec2& getBlockSetTopLeft() const;
+
+  /**
+   * Sets the top left coordinate of the block
+   *
+   * @param blockSetTopLeft to set
+   */
+  void setBlockSetTopLeft(const ci::vec2& blockSetTopLeft);
+
+  /**
+   * Overloaded operator to check for a block set existing within the user_board_
+   *
+   * @param rhs block set to compare with lhs
+   * @param lhs block set to compare with rhs
+   * @return whether the two are equal or not
+   */
+  friend bool operator==(const BlockSet& rhs, const BlockSet& lhs);
 
  private:
   ci::vec2 block_shape_;
-  ci::vec2 block_top_left_;
-  size_t increment;
+  ci::vec2 block_set_top_left; // TODO FIND WHERE YOU NEED TO ASSIGN THIS, PLACEBLOCK() AND GENERATEBLOCKS()
   bool is_square_;
 };
 

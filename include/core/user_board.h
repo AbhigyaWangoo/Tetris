@@ -35,7 +35,17 @@ class UserBoard {
    */
   const std::vector<BlockSet> &getUserBlocks() const;
 
+  void setTopLeft(const glm::vec2 &topLeft);
+  void setBottomRight(const glm::vec2 &bottomRight);
+  const glm::vec2 &getTopLeft() const;
+  const glm::vec2 &getBottomRight() const;
+
  private:
+  ci::vec2 top_left_;
+  ci::vec2 bottom_right_;
+  std::vector<BlockSet> user_blocks_;
+  std::vector<std::vector<bool>> grid_;
+
   /**
    * Adds a block to the visual representation of the user's blocks
    *
@@ -44,9 +54,6 @@ class UserBoard {
    * @param increment to indicate the size of the blocks
    */
   void AddBlockToGrid(BlockSet &block, size_t count, ci::vec2 &top_left);
-
-  std::vector<BlockSet> user_blocks_;
-  std::vector<std::vector<bool>> grid_;
 };
 
 }  // namespace tetris

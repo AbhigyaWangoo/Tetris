@@ -6,21 +6,26 @@
 
 namespace tetris {
 
-void Board::PlaceBlock(const BlockSet& block, glm::vec2& top_left) {
+void Board::PlaceBlock(BlockSet &block, glm::vec2& top_left) {
   if (IsOverlapping(block, top_left)) {
     throw std::runtime_error("The block is overlapping with others");
+  } else if (std::find(user_board_.getUserBlocks().begin(),
+                         user_board_.getUserBlocks().end(), block) == user_board_.getUserBlocks().end()) {
+    throw std::runtime_error(
+        "The block you clicked on wasn't part of the available blocks");
   } else {
     size_t count = 1;
-    
+    block.setBlockSetTopLeft(top_left);
+
     for (size_t i = 0; i < block.getBlockShape().y; i++) {
       board_[top_left.x][top_left.y + i] = true;
-      
+
       while (block.isSquare() && !board_[top_left.x + i][top_left.x + i]) {
         board_[top_left.x + count][top_left.y + i] = true;
         board_[top_left.x + i][top_left.y + count] = true;
         count++;
       }
-      
+
       count = 0;
     }
 
@@ -62,13 +67,13 @@ bool Board::IsOverlapping(const BlockSet& block, ci::vec2 top_left) {
       top_left.y < 0)
     return true;
 
-  for (size_t i = top_left.x; i < block.getBlockShape().x; i++) {
+  for (size_t i = top_left.y; i < block.getBlockShape().y; i++) {
     if (board_[top_left.x][i]) {
       return true;
     }
   }
 
-  for (size_t i = top_left.y; i < block.getBlockShape().y; i++) {
+  for (size_t i = top_left.x; i < block.getBlockShape().x; i++) {
     if (board_[i][top_left.y]) {
       return true;
     }
@@ -113,8 +118,13 @@ Board::Board() {
   }  // TODO Optimize
 }
 
-const std::vector<std::vector<bool>>& Board::getUserBoard() const {
-  return user_board_.getGrid();
+const UserBoard& Board::getUserBoard() const {
+  return user_board_;
+}
+
+void Board::setUserBoardCoordinates(ci::vec2 &top_left, ci::vec2 &bottom_right) {
+  user_board_.setTopLeft(top_left);
+  user_board_.setBottomRight(bottom_right);
 }
 
 }  // namespace tetris

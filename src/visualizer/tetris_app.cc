@@ -16,15 +16,15 @@ void TetrisApp::draw() {
 }
 
 void TetrisApp::setup() {
-  tetris::BlockSet block_set;
-  block_set.InitializeBlock();
-  ci::vec2 coord = ci::vec2(1, 1);
-
-  board_.PlaceBlock(block_set, coord);
-
-  canvas_ = BoardCanvas(
-      board_);  // TODO We need a way to update the board_ in the canvas with
-                // the board with the block above every time
+//  tetris::BlockSet block_set;
+//  block_set.InitializeBlock();
+//  ci::vec2 coord = ci::vec2(1, 1);
+//
+//  try {
+//    board_.PlaceBlock(block_set, coord);
+//  } catch(std::runtime_error &error) {
+//    std::cout << error.what();
+//  }
 }
 
 void TetrisApp::update() {
@@ -36,10 +36,14 @@ void TetrisApp::update() {
 }
 
 void TetrisApp::mouseDown(ci::app::MouseEvent event) {
+  ci::vec2 position = event.getPos();
+  BlockSet current_block;
+
   if (!canvas_.HasSelectedBlock()) {
-    canvas_.SelectBlock(event);
-    // we're selecting a block rn
+    canvas_.SelectBlock(position);
   } else {
+    current_block = canvas_.getCurrentBlock();
+    board_.PlaceBlock(current_block, position);
     // we're placing a block rn
   }
 }
