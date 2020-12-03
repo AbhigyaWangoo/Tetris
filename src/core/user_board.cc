@@ -32,26 +32,22 @@ void tetris::UserBoard::AddBlockToGrid(tetris::BlockSet& block, size_t count,
     grid_.push_back(row);
   }
 
-//  ci::vec2 current_top_left = ci::vec2(user_blocks_top_left.x + count * block.getBlockShape().x * increment_, user_blocks_top_left.y);
-//  current_selected_block_.setBlockSetTopLeft(current_top_left);
-
   block.setBlockSetTopLeft(top_left);
 
   for (size_t i = 0; i < block.getBlockShape().y; i++) {
-    grid_[top_left.x][top_left.y + i] = true;
+    grid_[top_left.y][top_left.x + i] = true;
+
+    if (block.isSquare()) {
+      for (size_t j = 1; j < i + 1; j++) {
+        grid_[top_left.y + j][top_left.x + i] = true;
+        grid_[top_left.y + i][top_left.x + j] = true;
+      }
+    }
   }
 
   for (size_t j = 0; j < block.getBlockShape().x; j++) {
-    grid_[top_left.x + j][top_left.y] = true;
+    grid_[top_left.y + j][top_left.x] = true;
   }
-
-  if (block.isSquare()) {
-    //    for (size_t j = 0; j <= i;j++) {
-    //      grid_[top_left.x + j][i] = true;
-    //      grid_[i][top_left.y + j] = true;
-    //    }
-  }  // TODO RID THIS NESTED LOOP, THIS PORTION IS A REPITITION, MOVE INTO
-//     // FUNCTION
 }
 
 tetris::UserBoard::UserBoard() {

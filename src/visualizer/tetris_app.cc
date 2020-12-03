@@ -16,15 +16,6 @@ void TetrisApp::draw() {
 }
 
 void TetrisApp::setup() {
-  //  tetris::BlockSet block_set;
-  //  block_set.InitializeBlock();
-  //  ci::vec2 coord = ci::vec2(1, 1);
-  //
-  //  try {
-  //    board_.PlaceBlock(block_set, coord);
-  //  } catch(std::runtime_error &error) {
-  //    std::cout << error.what();
-  //  }
 }
 
 void TetrisApp::update() {
@@ -44,12 +35,19 @@ void TetrisApp::mouseDown(ci::app::MouseEvent event) {
       current_block_ = canvas_.getCurrentBlock();
       has_selected_block_ = true;
     } else {
-      board_.PlaceBlock(current_block_, position);
+      board_.PlaceBlock(current_block_, position, increment_);
+      has_selected_block_ = false;
     }
   } catch (std::runtime_error &error) {
     std::cout << error.what();
   }
 }
+//void TetrisApp::keyDown(cinder::app::KeyEvent event) {
+//  if (event.isControlDown()) {
+//    current_block_.InitializeBlock(false);
+//    has_selected_block_ = false;
+//  }
+//}
 
 }  // namespace visualizer
 

@@ -24,7 +24,7 @@ class Board {
    * @param block to place
    * @param top_left coordinate of the Board for the block placement
    */
-  void PlaceBlock(BlockSet &block, ci::vec2 &top_left);
+  void PlaceBlock(BlockSet &block, ci::vec2 &top_left, size_t increment);
 
   /**
    * Updates Board to remove rows and columns, check for game's end, and new
@@ -85,6 +85,8 @@ class Board {
    * @param is_horizontal determines whether its a row or column to check
    */
   void RemoveRow(size_t row, bool is_horizontal);
+
+  glm::vec2 ConvertBoardCoordinate(glm::vec2 &board_coordinate, size_t increment);
 };
 
 }  // namespace tetris

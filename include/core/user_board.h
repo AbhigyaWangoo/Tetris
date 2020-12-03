@@ -10,6 +10,10 @@
 #include "block_set.h"
 
 namespace tetris {
+const static double kWindowWidth = 600;
+const static double kWindowLength = 678;
+const ci::vec2 kTopLeft = ci::vec2(kWindowWidth / 6,kWindowWidth / 6);
+const ci::vec2 kBottomRight = ci::vec2(kWindowWidth * 5 / 6,kWindowWidth * 5 / 6);
 /**
  * Class representing the blocks available to the user
  */

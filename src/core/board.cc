@@ -6,33 +6,51 @@
 
 namespace tetris {
 
-void Board::PlaceBlock(BlockSet &block, glm::vec2& top_left) {
-  //glm::vec2 updated_position = ConvertBoardCoordinate(top_left);
-  if (IsOverlapping(block, top_left)) {
+void Board::PlaceBlock(BlockSet& block, glm::vec2& top_left, size_t increment) {
+  glm::vec2 updated_position = ConvertBoardCoordinate(top_left, increment);
+  if (IsOverlapping(block, updated_position)) {
     throw std::runtime_error("The block is overlapping with others");
   } else if (std::find(user_board_.getUserBlocks().begin(),
-                         user_board_.getUserBlocks().end(), block) == user_board_.getUserBlocks().end()) {
+                       user_board_.getUserBlocks().end(),
+                       block) == user_board_.getUserBlocks().end()) {
     throw std::runtime_error(
         "The block you clicked on wasn't part of the available blocks");
   } else {
-    size_t count = 1;
-    block.setBlockSetTopLeft(top_left);
+    // size_t count = 1;
+    block.setBlockSetTopLeft(updated_position);
 
     for (size_t i = 0; i < block.getBlockShape().y; i++) {
-      board_[top_left.x][top_left.y + i] = true;
+      board_[updated_position.y][updated_position.x + i] = true;
 
-      while (block.isSquare() && !board_[top_left.x + i][top_left.x + i]) {
-        board_[top_left.x + count][top_left.y + i] = true;
-        board_[top_left.x + i][top_left.y + count] = true;
-        count++;
+      if (block.isSquare()) {
+        for (size_t j = 1; j < i + 1; j++) {
+          board_[updated_position.y + j][updated_position.x + i] = true;
+          board_[updated_position.y + i][updated_position.x + j] = true;
+        }
       }
-
-      count = 0;
     }
 
     for (size_t j = 0; j < block.getBlockShape().x; j++) {
-      board_[top_left.x + j][top_left.y] = true;
+      board_[updated_position.y + j][updated_position.x] = true;
     }
+
+    // OLD IMPLEMENTATION
+    //    for (size_t i = 0; i < block.getBlockShape().y; i++) {
+    //      board_[updated_position.x][updated_position.y + i] = true;
+    //
+    //      while (block.isSquare() && !board_[updated_position.x +
+    //      i][updated_position.x + i]) {
+    //        board_[updated_position.x + count][updated_position.y + i] = true;
+    //        board_[updated_position.x + i][updated_position.y + count] = true;
+    //        count++;
+    //      }
+    //
+    //      count = 0;
+    //    }
+    //
+    //    for (size_t j = 0; j < block.getBlockShape().x; j++) {
+    //      board_[updated_position.x + j][updated_position.y] = true;
+    //    }
 
     // user_board_.erase(std::remove(user_board_.begin(), user_board_.end(),
     // block), user_board_.end()); user_blocks_.erase(block); TODO remove block
@@ -42,7 +60,7 @@ void Board::PlaceBlock(BlockSet &block, glm::vec2& top_left) {
 
 void Board::UpdateBoard() {
   if (HasLostGame()) {
-    throw std::overflow_error("Game over");
+    throw std::runtime_error("Game over");
   }
 
   user_board_.GenerateUserBlocks();
@@ -123,9 +141,20 @@ const UserBoard& Board::getUserBoard() const {
   return user_board_;
 }
 
-void Board::setUserBoardCoordinates(ci::vec2 &top_left, ci::vec2 &bottom_right) {
+void Board::setUserBoardCoordinates(ci::vec2& top_left,
+                                    ci::vec2& bottom_right) {
   user_board_.setTopLeft(top_left);
   user_board_.setBottomRight(bottom_right);
+}
+
+glm::vec2 Board::ConvertBoardCoordinate(glm::vec2& board_coordinate,
+                                        size_t increment) {
+  glm::vec2 new_position;
+  new_position =
+      ci::vec2(std::floor((board_coordinate.y - kTopLeft.y) / increment),
+               std::floor((board_coordinate.x - kTopLeft.x) / increment));
+
+  return new_position;
 }
 
 }  // namespace tetris
