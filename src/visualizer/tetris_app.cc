@@ -33,9 +33,11 @@ void TetrisApp::mouseDown(ci::app::MouseEvent event) {
     if (!has_selected_block_) {
       canvas_.SelectBlock(position);
       current_block_ = canvas_.getCurrentBlock();
+
       has_selected_block_ = true;
     } else {
       board_.PlaceBlock(current_block_, position, increment_);
+
       has_selected_block_ = false;
     }
   } catch (std::runtime_error &error) {

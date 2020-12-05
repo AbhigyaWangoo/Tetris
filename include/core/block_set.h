@@ -81,8 +81,8 @@ class BlockSet {
   friend bool operator==(const BlockSet& rhs, const BlockSet& lhs);
 
  private:
-  ci::vec2 block_shape_;
-  ci::vec2 block_set_top_left; // TODO FIND WHERE YOU NEED TO ASSIGN THIS, PLACEBLOCK() AND GENERATEBLOCKS()
+  ci::vec2 block_shape_ = ci::vec2(0,0);
+  ci::vec2 block_set_top_left;
   bool is_square_;
 };
 

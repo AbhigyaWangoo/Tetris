@@ -41,21 +41,22 @@ void BoardCanvas::RenderUserBlocks() {
 void BoardCanvas::RenderBlocks(
     ci::vec2 &top_left, ci::vec2 &bottom_right,
     const std::vector<std::vector<bool>> &shaded_grid) {
-  size_t increment_x = (bottom_right.x - top_left.x) / kBoardSize;
-  size_t increment_y = (bottom_right.y - top_left.y) / kBoardSize;
+  size_t increment_x = (bottom_right.x - top_left.x) / shaded_grid[1].size();
+  size_t increment_y = (bottom_right.y - top_left.y) / shaded_grid.size();
 
   for (size_t i = 0; i < shaded_grid.size(); i++) {
     for (size_t j = 0; j < shaded_grid[i].size(); j++) {
       if (shaded_grid[i][j]) {
-        ci::vec2 block_top_left = ci::vec2(i * increment_x + top_left.x,
-                                           j * increment_y + top_left.y);
+        ci::vec2 block_top_left = ci::vec2(j * increment_x + top_left.x,
+                                           i * increment_y + top_left.y);
         ci::vec2 block_bottom_right =
-            ci::vec2((i + 1) * increment_x + top_left.x,
-                     (j + 1) * increment_y + top_left.y);
+            ci::vec2((j + 1) * increment_x + top_left.x,
+                     (i + 1) * increment_y + top_left.y);
 
         if (block_bottom_right.x > bottom_right.x ||
             block_bottom_right.y > bottom_right.y) {
-          return;
+          return;  // throw std::runtime_error("user_block rendered out of
+                   // frame");
         }
 
         ci::gl::drawStrokedRect(ci::Rectf(block_top_left, block_bottom_right),
@@ -75,7 +76,7 @@ void BoardCanvas::RenderGrid() {
 }
 
 void BoardCanvas::SelectBlock(ci::vec2 &position) {
-  std::vector<BlockSet> user_blocksets = board_.getUserBoard().getUserBlocks();
+  std::vector<BlockSet> user_blockset = board_.getUserBoard().getUserBlocks();
   ci::vec2 user_board_top_left = board_.getUserBoard().getTopLeft();
   ci::vec2 user_board_bottom_right = board_.getUserBoard().getBottomRight();
   bool passing_vertical_range = user_board_top_left.y <= position.y &&
@@ -84,16 +85,14 @@ void BoardCanvas::SelectBlock(ci::vec2 &position) {
 
   size_t count = 0;
   double increment =
-      (user_board_bottom_right.x - user_board_top_left.x) / kUserBlockCount;
-  while (count < kUserBlockCount) {
+      (kBottomRight.x - kTopLeft.x) / (board_.getUserBoard().getUserBlocks().size());
+  while (count < board_.getUserBoard().getUserBlocks().size()) {
     passing_horizontal_range =
-        user_board_top_left.x + count * increment <= position.x &&
-        user_board_top_left.x + count * increment +
-                user_blocksets[count].getBlockShape().x * increment_ >=
-            position.x;
+        kTopLeft.x + count * increment <= position.x &&
+        kTopLeft.x + (count + 1) * increment >= position.x;
 
     if (passing_horizontal_range && passing_vertical_range) {
-      current_selected_block_ = user_blocksets[count];
+      current_selected_block_ = user_blockset[count];
       break;
     } else if (!passing_horizontal_range && !passing_vertical_range) {
       throw std::runtime_error("You haven't selected a block");

@@ -6,11 +6,11 @@
 
 void tetris::UserBoard::GenerateUserBlocks() {
   BlockSet current_block;
-  ci::vec2 top_left_block;
+  ci::vec2 top_left_block = ci::vec2(0,0);
 
   if (user_blocks_.empty()) {
     for (size_t i = 0; i < kUserBlockCount; i++) {
-      top_left_block = ci::vec2(current_block.getBlockShape().x * i, 0);
+      top_left_block = ci::vec2(current_block.getBlockShape().x + current_block.getBlockSetTopLeft().x + 1, 0);
 
       current_block.InitializeBlock();
       user_blocks_.push_back(current_block);
@@ -22,19 +22,17 @@ void tetris::UserBoard::GenerateUserBlocks() {
 
 void tetris::UserBoard::AddBlockToGrid(tetris::BlockSet& block, size_t count,
                                        ci::vec2& top_left) {
-  while (top_left.x + block.getBlockShape().x > grid_.size()) {
+  while (top_left.x + block.getBlockShape().x > grid_[0].size()) {
     std::vector<bool> row;
 
     for (size_t j = 0; j < kBoardSize; j++) {
-      row.push_back(false);
+      grid_[j].push_back(false);
     }
-
-    grid_.push_back(row);
   }
 
   block.setBlockSetTopLeft(top_left);
 
-  for (size_t i = 0; i < block.getBlockShape().y; i++) {
+  for (size_t i = 0; i < block.getBlockShape().x; i++) {
     grid_[top_left.y][top_left.x + i] = true;
 
     if (block.isSquare()) {
@@ -45,7 +43,7 @@ void tetris::UserBoard::AddBlockToGrid(tetris::BlockSet& block, size_t count,
     }
   }
 
-  for (size_t j = 0; j < block.getBlockShape().x; j++) {
+  for (size_t j = 0; j < block.getBlockShape().y; j++) {
     grid_[top_left.y + j][top_left.x] = true;
   }
 }

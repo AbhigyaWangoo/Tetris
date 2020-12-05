@@ -16,41 +16,22 @@ void Board::PlaceBlock(BlockSet& block, glm::vec2& top_left, size_t increment) {
     throw std::runtime_error(
         "The block you clicked on wasn't part of the available blocks");
   } else {
-    // size_t count = 1;
     block.setBlockSetTopLeft(updated_position);
 
-    for (size_t i = 0; i < block.getBlockShape().y; i++) {
-      board_[updated_position.y][updated_position.x + i] = true;
+    for (size_t i = 0; i < block.getBlockShape().x; i++) {
+      board_[updated_position.x][updated_position.y + i] = true;
 
       if (block.isSquare()) {
         for (size_t j = 1; j < i + 1; j++) {
-          board_[updated_position.y + j][updated_position.x + i] = true;
-          board_[updated_position.y + i][updated_position.x + j] = true;
+          board_[updated_position.x + j][updated_position.y + i] = true;
+          board_[updated_position.x + i][updated_position.y + j] = true;
         }
       }
     }
 
-    for (size_t j = 0; j < block.getBlockShape().x; j++) {
-      board_[updated_position.y + j][updated_position.x] = true;
+    for (size_t j = 0; j < block.getBlockShape().y; j++) {
+      board_[updated_position.x + j][updated_position.y] = true;
     }
-
-    // OLD IMPLEMENTATION
-    //    for (size_t i = 0; i < block.getBlockShape().y; i++) {
-    //      board_[updated_position.x][updated_position.y + i] = true;
-    //
-    //      while (block.isSquare() && !board_[updated_position.x +
-    //      i][updated_position.x + i]) {
-    //        board_[updated_position.x + count][updated_position.y + i] = true;
-    //        board_[updated_position.x + i][updated_position.y + count] = true;
-    //        count++;
-    //      }
-    //
-    //      count = 0;
-    //    }
-    //
-    //    for (size_t j = 0; j < block.getBlockShape().x; j++) {
-    //      board_[updated_position.x + j][updated_position.y] = true;
-    //    }
 
     // user_board_.erase(std::remove(user_board_.begin(), user_board_.end(),
     // block), user_board_.end()); user_blocks_.erase(block); TODO remove block
@@ -81,9 +62,7 @@ bool Board::HasLostGame() {
 }
 
 bool Board::IsOverlapping(const BlockSet& block, ci::vec2 top_left) {
-  if (top_left.x + block.getBlockShape().x > kBoardSize ||
-      top_left.y + block.getBlockShape().y > kBoardSize || top_left.x < 0 ||
-      top_left.y < 0)
+  if (top_left.x + block.getBlockShape().y > kBoardSize || top_left.y + block.getBlockShape().x > kBoardSize || top_left.x < 0 || top_left.y < 0)
     return true;
 
   for (size_t i = top_left.y; i < block.getBlockShape().y; i++) {
