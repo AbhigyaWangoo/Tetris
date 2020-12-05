@@ -14,6 +14,7 @@ const static double kWindowWidth = 600;
 const static double kWindowLength = 1000;
 const ci::vec2 kTopLeft = ci::vec2(kWindowWidth / 6,kWindowWidth / 6);
 const ci::vec2 kBottomRight = ci::vec2(kWindowWidth * 5 / 6,kWindowWidth * 5 / 6);
+static size_t increment_ = (kBottomRight.x - kTopLeft.x) / kBoardSize;
 /**
  * Class representing the blocks available to the user
  */
@@ -57,7 +58,7 @@ class UserBoard {
    * @param count to indicate the position of the block on the grid
    * @param increment to indicate the size of the blocks
    */
-  void AddBlockToGrid(BlockSet &block, size_t count, ci::vec2 &top_left);
+  void AddBlockToGrid(BlockSet &block, ci::vec2 &top_left);
 };
 
 }  // namespace tetris

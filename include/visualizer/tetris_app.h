@@ -7,7 +7,6 @@
 #include "tetris_canvas.h"
 
 namespace tetris {
-static size_t increment_ = (kBottomRight.x - kTopLeft.x) / kBoardSize;
 
 namespace visualizer {
 

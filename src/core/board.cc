@@ -40,10 +40,6 @@ void Board::PlaceBlock(BlockSet& block, glm::vec2& top_left, size_t increment) {
 }
 
 void Board::UpdateBoard() {
-  if (HasLostGame()) {
-    throw std::runtime_error("Game over");
-  }
-
   user_board_.GenerateUserBlocks();
 
   for (size_t i = 0; i < kBoardSize; i++) {
@@ -53,25 +49,40 @@ void Board::UpdateBoard() {
       RemoveRow(i, false);
     }
   }
+
+  if (HasLostGame()) {
+    throw std::range_error("Game Over");
+  }
 }
 
 bool Board::HasLostGame() {
-  // Find out whether the existing board is positioned so that the user can't
-  // place any blocks down
-  return false;
+  for (const BlockSet& block_set: user_board_.getUserBlocks()) {
+    if (HasAvailablePlacement(block_set))
+      return false;
+  }
+
+  return true;
 }
 
 bool Board::IsOverlapping(const BlockSet& block, ci::vec2 top_left) {
   if (top_left.x + block.getBlockShape().y > kBoardSize || top_left.y + block.getBlockShape().x > kBoardSize || top_left.x < 0 || top_left.y < 0)
     return true;
 
-  for (size_t i = top_left.y; i < block.getBlockShape().y; i++) {
+  for (size_t i = top_left.y; i < block.getBlockShape().x + top_left.y; i++) {
     if (board_[top_left.x][i]) {
       return true;
     }
+
+    if (block.isSquare() && i > top_left.y) {
+      for (size_t j = 1; j < block.getBlockShape().y; j++) {
+        if (board_[top_left.x + j][i]) {
+          return true;
+        }
+      }
+    }
   }
 
-  for (size_t i = top_left.x; i < block.getBlockShape().x; i++) {
+  for (size_t i = top_left.x; i < block.getBlockShape().y + top_left.x; i++) {
     if (board_[i][top_left.y]) {
       return true;
     }
@@ -134,6 +145,20 @@ glm::vec2 Board::ConvertBoardCoordinate(glm::vec2& board_coordinate,
                std::floor((board_coordinate.x - kTopLeft.x) / increment));
 
   return new_position;
+}
+bool Board::HasAvailablePlacement(const BlockSet& block_set) {
+  ci::vec2 block_set_placement;
+
+  for (size_t i = 0; i < kBoardSize; i++) {
+    for (size_t j = 0; j < kBoardSize; j++) {
+      block_set_placement = ci::vec2(i, j);
+      if (!IsOverlapping(block_set, block_set_placement)) {
+        return true;
+      }
+    }
+  }
+
+  return false; /// TODO CHANGE THIS
 }
 
 }  // namespace tetris

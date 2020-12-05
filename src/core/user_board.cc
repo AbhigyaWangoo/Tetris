@@ -6,21 +6,23 @@
 
 void tetris::UserBoard::GenerateUserBlocks() {
   BlockSet current_block;
-  ci::vec2 top_left_block = ci::vec2(0,0);
+  ci::vec2 top_left_block = ci::vec2(0, 0);
 
   if (user_blocks_.empty()) {
     for (size_t i = 0; i < kUserBlockCount; i++) {
-      top_left_block = ci::vec2(current_block.getBlockShape().x + current_block.getBlockSetTopLeft().x + 1, 0);
+      top_left_block = ci::vec2(current_block.getBlockShape().x +
+                                    current_block.getBlockSetTopLeft().x + 1,
+                                0);
 
       current_block.InitializeBlock();
       user_blocks_.push_back(current_block);
 
-      AddBlockToGrid(current_block, i, top_left_block);
+      AddBlockToGrid(current_block, top_left_block);
     }
   }
 }
 
-void tetris::UserBoard::AddBlockToGrid(tetris::BlockSet& block, size_t count,
+void tetris::UserBoard::AddBlockToGrid(tetris::BlockSet& block,
                                        ci::vec2& top_left) {
   while (top_left.x + block.getBlockShape().x > grid_[0].size()) {
     std::vector<bool> row;
@@ -63,18 +65,23 @@ tetris::UserBoard::UserBoard() {
 const std::vector<std::vector<bool>>& tetris::UserBoard::getGrid() const {
   return grid_;
 }
+
 const std::vector<tetris::BlockSet>& tetris::UserBoard::getUserBlocks() const {
   return user_blocks_;
 }
+
 void tetris::UserBoard::setTopLeft(const glm::vec2& topLeft) {
   top_left_ = topLeft;
 }
+
 void tetris::UserBoard::setBottomRight(const glm::vec2& bottomRight) {
   bottom_right_ = bottomRight;
 }
+
 const glm::vec2& tetris::UserBoard::getTopLeft() const {
   return top_left_;
 }
+
 const glm::vec2& tetris::UserBoard::getBottomRight() const {
   return bottom_right_;
 }

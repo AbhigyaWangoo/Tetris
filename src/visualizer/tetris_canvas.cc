@@ -55,8 +55,7 @@ void BoardCanvas::RenderBlocks(
 
         if (block_bottom_right.x > bottom_right.x ||
             block_bottom_right.y > bottom_right.y) {
-          return;  // throw std::runtime_error("user_block rendered out of
-                   // frame");
+          throw std::runtime_error(" user_block rendered out of frame ");
         }
 
         ci::gl::drawStrokedRect(ci::Rectf(block_top_left, block_bottom_right),
@@ -95,7 +94,7 @@ void BoardCanvas::SelectBlock(ci::vec2 &position) {
       current_selected_block_ = user_blockset[count];
       break;
     } else if (!passing_horizontal_range && !passing_vertical_range) {
-      throw std::runtime_error("You haven't selected a block");
+      throw std::runtime_error(" You haven't selected a block ");
     }
 
     count++;

@@ -21,8 +21,10 @@ void TetrisApp::setup() {
 void TetrisApp::update() {
   try {
     board_.UpdateBoard();
-  } catch (std::exception &e) {
-    e.what();
+  } catch (std::runtime_error &error) {
+    std::cout << error.what();
+  } catch (std::range_error &error) {
+    // TODO IDK DO SOMETHING TO SIGNIFY ENDGAME
   }
 }
 
@@ -44,12 +46,6 @@ void TetrisApp::mouseDown(ci::app::MouseEvent event) {
     std::cout << error.what();
   }
 }
-//void TetrisApp::keyDown(cinder::app::KeyEvent event) {
-//  if (event.isControlDown()) {
-//    current_block_.InitializeBlock(false);
-//    has_selected_block_ = false;
-//  }
-//}
 
 }  // namespace visualizer
 
