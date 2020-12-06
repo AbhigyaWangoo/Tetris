@@ -83,8 +83,8 @@ void BoardCanvas::SelectBlock(ci::vec2 &position) {
   bool passing_horizontal_range;
 
   size_t count = 0;
-  double increment =
-      (kBottomRight.x - kTopLeft.x) / (board_.getUserBoard().getUserBlocks().size());
+  double increment = (kBottomRight.x - kTopLeft.x) /
+                     (board_.getUserBoard().getUserBlocks().size());
   while (count < board_.getUserBoard().getUserBlocks().size()) {
     passing_horizontal_range =
         kTopLeft.x + count * increment <= position.x &&

@@ -51,12 +51,12 @@ void Board::UpdateBoard() {
   }
 
   if (HasLostGame()) {
-    throw std::range_error("Game Over");
+    throw std::range_error(" Game Over ");
   }
 }
 
 bool Board::HasLostGame() {
-  for (const BlockSet& block_set: user_board_.getUserBlocks()) {
+  for (const BlockSet& block_set : user_board_.getUserBlocks()) {
     if (HasAvailablePlacement(block_set))
       return false;
   }
@@ -65,7 +65,9 @@ bool Board::HasLostGame() {
 }
 
 bool Board::IsOverlapping(const BlockSet& block, ci::vec2 top_left) {
-  if (top_left.x + block.getBlockShape().y > kBoardSize || top_left.y + block.getBlockShape().x > kBoardSize || top_left.x < 0 || top_left.y < 0)
+  if (top_left.x + block.getBlockShape().y > kBoardSize ||
+      top_left.y + block.getBlockShape().x > kBoardSize || top_left.x < 0 ||
+      top_left.y < 0)
     return true;
 
   for (size_t i = top_left.y; i < block.getBlockShape().x + top_left.y; i++) {
@@ -158,7 +160,7 @@ bool Board::HasAvailablePlacement(const BlockSet& block_set) {
     }
   }
 
-  return false; /// TODO CHANGE THIS
+  return false;  /// TODO CHANGE THIS
 }
 
 }  // namespace tetris

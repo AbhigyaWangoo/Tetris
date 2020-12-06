@@ -8,6 +8,8 @@ void tetris::UserBoard::GenerateUserBlocks() {
   BlockSet current_block;
   ci::vec2 top_left_block = ci::vec2(0, 0);
 
+  current_block.setBlockSetTopLeft(top_left_block);
+
   if (user_blocks_.empty()) {
     for (size_t i = 0; i < kUserBlockCount; i++) {
       top_left_block = ci::vec2(current_block.getBlockShape().x +

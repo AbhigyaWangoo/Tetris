@@ -37,14 +37,12 @@ class BoardCanvas {
    */
   void RenderBoard();
 
-  void SelectBlock(ci::vec2 &position);
-
   /**
-   * Assigns the current block according to the user
+   * Selects the current block depending on where the user clicks
    *
-   * @param block_set to set with
+   * @param position to select a block from
    */
-  void setCurrentBlock(BlockSet &block_set);
+  void SelectBlock(ci::vec2 &position);
 
   /**
    * Finds the current block being selected by the user
@@ -52,6 +50,8 @@ class BoardCanvas {
    * @return current_user_block_
    */
   const BlockSet &getCurrentBlock() const;
+
+  void HandleMouseEvent(ci::app::MouseEvent &event);
 
  private:
   tetris::Board board_;

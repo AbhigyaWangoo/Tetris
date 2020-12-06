@@ -25,20 +25,6 @@ const int kUserBlockCount = 3;
 class BlockSet {
  public:
   /**
-   * Determines whether the current block can be created
-   *
-   * @return whether the current block is valid or not
-   */
-  bool IsValidBlock() const;
-
-  /**
-   * Sets the block's square status
-   *
-   * @param isSquare to assign the block's status
-   */
-  void setIsSquare(bool isSquare);
-
-  /**
    * Finds the shape of the block
    *
    * @return what shape the block is in

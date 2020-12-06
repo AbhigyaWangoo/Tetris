@@ -10,25 +10,17 @@ bool BlockSet::isSquare() const {
   return is_square_;
 }
 
-void BlockSet::setIsSquare(bool isSquare) {
-  is_square_ = isSquare;
-}
-
 const glm::vec2& BlockSet::getBlockShape() const {
   return block_shape_;
 }
 
-bool BlockSet::IsValidBlock() const {
-  // TODO IMPLEMENT
-  return false;
-}
 
 void BlockSet::InitializeBlock() {
   size_t rand_factor = kBoardSize / 2;
   size_t x = rand() % rand_factor + 1;
   size_t y;
   bool is_square = x % 2 != 0;
-  
+
   if (is_square) {
     y = x;
   } else {

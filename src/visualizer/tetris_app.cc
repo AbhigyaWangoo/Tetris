@@ -11,8 +11,13 @@ void TetrisApp::draw() {
   canvas_.RenderBoard();
 
   ci::gl::drawStringCentered("Tetris",
-                             glm::vec2(kWindowWidth / 2, kWindowLength / 11),
+                             glm::vec2(kWindowWidth / 2, kWindowLength / 15),
                              ci::Color("white"));
+  if (!is_live_game) {
+    ci::gl::drawStringCentered("GAME OVER",
+                               glm::vec2(kWindowWidth / 2, kWindowLength / 20),
+                               ci::Color("white"));
+  }
 }
 
 void TetrisApp::setup() {
@@ -21,29 +26,31 @@ void TetrisApp::setup() {
 void TetrisApp::update() {
   try {
     board_.UpdateBoard();
+  } catch (std::range_error &error) {
+    is_live_game = false;
   } catch (std::runtime_error &error) {
     std::cout << error.what();
-  } catch (std::range_error &error) {
-    // TODO IDK DO SOMETHING TO SIGNIFY ENDGAME
   }
 }
 
 void TetrisApp::mouseDown(ci::app::MouseEvent event) {
-  ci::vec2 position = event.getPos();
+  if (is_live_game) {
+    ci::vec2 position = event.getPos();
 
-  try {
-    if (!has_selected_block_) {
-      canvas_.SelectBlock(position);
-      current_block_ = canvas_.getCurrentBlock();
+    try {
+      if (!has_selected_block_) {
+        canvas_.SelectBlock(position);
+        current_block_ = canvas_.getCurrentBlock();
 
-      has_selected_block_ = true;
-    } else {
-      board_.PlaceBlock(current_block_, position, increment_);
+        has_selected_block_ = true;
+      } else {
+        board_.PlaceBlock(current_block_, position, increment_);
 
-      has_selected_block_ = false;
+        has_selected_block_ = false;
+      }
+    } catch (std::runtime_error &error) {
+      std::cout << error.what();
     }
-  } catch (std::runtime_error &error) {
-    std::cout << error.what();
   }
 }
 
