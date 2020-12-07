@@ -51,8 +51,6 @@ class BoardCanvas {
    */
   const BlockSet &getCurrentBlock() const;
 
-  void HandleMouseEvent(ci::app::MouseEvent &event);
-
  private:
   tetris::Board board_;
   tetris::BlockSet current_selected_block_;

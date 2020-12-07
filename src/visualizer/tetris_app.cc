@@ -13,7 +13,7 @@ void TetrisApp::draw() {
   ci::gl::drawStringCentered("Tetris",
                              glm::vec2(kWindowWidth / 2, kWindowLength / 15),
                              ci::Color("white"));
-  if (!is_live_game) {
+  if (!is_live_game_) {
     ci::gl::drawStringCentered("GAME OVER",
                                glm::vec2(kWindowWidth / 2, kWindowLength / 20),
                                ci::Color("white"));
@@ -27,14 +27,14 @@ void TetrisApp::update() {
   try {
     board_.UpdateBoard();
   } catch (std::range_error &error) {
-    is_live_game = false;
+    is_live_game_ = false;
   } catch (std::runtime_error &error) {
     std::cout << error.what();
   }
 }
 
 void TetrisApp::mouseDown(ci::app::MouseEvent event) {
-  if (is_live_game) {
+  if (is_live_game_) {
     ci::vec2 position = event.getPos();
 
     try {

@@ -8,16 +8,17 @@ namespace tetris {
 
 void Board::PlaceBlock(BlockSet& block, glm::vec2& top_left, size_t increment) {
   glm::vec2 updated_position = ConvertBoardCoordinate(top_left, increment);
+  BlockSet block_set_to_remove = block;
+
   if (IsOverlapping(block, updated_position)) {
     throw std::runtime_error("The block is overlapping with others");
   } else if (std::find(user_board_.getUserBlocks().begin(),
-                       user_board_.getUserBlocks().end(),
-                       block) == user_board_.getUserBlocks().end()) {
+                user_board_.getUserBlocks().end(),
+                block) == user_board_.getUserBlocks().end()) {
     throw std::runtime_error(
         "The block you clicked on wasn't part of the available blocks");
   } else {
     block.setBlockSetTopLeft(updated_position);
-
     for (size_t i = 0; i < block.getBlockShape().x; i++) {
       board_[updated_position.x][updated_position.y + i] = true;
 
@@ -33,10 +34,9 @@ void Board::PlaceBlock(BlockSet& block, glm::vec2& top_left, size_t increment) {
       board_[updated_position.x + j][updated_position.y] = true;
     }
 
-    // user_board_.erase(std::remove(user_board_.begin(), user_board_.end(),
-    // block), user_board_.end()); user_blocks_.erase(block); TODO remove block
-    // from user blocks after "placing" it down
+    user_board_.RemoveBlock(block_set_to_remove);
   }
+
 }
 
 void Board::UpdateBoard() {
@@ -148,6 +148,7 @@ glm::vec2 Board::ConvertBoardCoordinate(glm::vec2& board_coordinate,
 
   return new_position;
 }
+
 bool Board::HasAvailablePlacement(const BlockSet& block_set) {
   ci::vec2 block_set_placement;
 

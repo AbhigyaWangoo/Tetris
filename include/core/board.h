@@ -87,6 +87,7 @@ class Board {
   void RemoveRow(size_t row, bool is_horizontal);
 
   glm::vec2 ConvertBoardCoordinate(glm::vec2 &board_coordinate, size_t increment);
+
   bool HasAvailablePlacement(const BlockSet &block_set);
 };
 

@@ -4,8 +4,6 @@
 
 #include "visualizer/tetris_canvas.h"
 
-#include <visualizer/tetris_app.h>  // TODO FIGURE OUT HOW TO REMOVE THIS
-
 namespace tetris {
 namespace visualizer {
 
@@ -85,6 +83,7 @@ void BoardCanvas::SelectBlock(ci::vec2 &position) {
   size_t count = 0;
   double increment = (kBottomRight.x - kTopLeft.x) /
                      (board_.getUserBoard().getUserBlocks().size());
+
   while (count < board_.getUserBoard().getUserBlocks().size()) {
     passing_horizontal_range =
         kTopLeft.x + count * increment <= position.x &&

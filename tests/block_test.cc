@@ -123,8 +123,7 @@ TEST_CASE("Placing blocks") {
 
     board.PlaceBlock(block, coordinate, increment);
 
-    passing_condition =
-        !(board.getUserBoard().getUserBlocks().front() == block);
+    passing_condition = !(board.getUserBoard().getUserBlocks().front() == block);
     REQUIRE(passing_condition);
   }
 }

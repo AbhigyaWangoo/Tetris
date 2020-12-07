@@ -40,10 +40,35 @@ class UserBoard {
    */
   const std::vector<BlockSet> &getUserBlocks() const;
 
+  /**
+   * Sets the top left coordinate of the top left of the user_board
+   *
+   * @param topLeft coordinate
+   */
   void setTopLeft(const glm::vec2 &topLeft);
+
+  /**
+   * Sets bottom right coordinate of the bottom right of the user_board
+   *
+   * @param bottomRight coordinate
+   */
   void setBottomRight(const glm::vec2 &bottomRight);
+
+  /**
+   * Finds the top left coordinate of the user_board
+   *
+   * @return the top left coordinate
+   */
   const glm::vec2 &getTopLeft() const;
+
+  /**
+   * Returns the bottom right coordinate of the user_board
+   *
+   * @return the coordinates of the user_board
+   */
   const glm::vec2 &getBottomRight() const;
+
+  void RemoveBlock(BlockSet &block_set);
 
  private:
   ci::vec2 top_left_;
@@ -56,9 +81,10 @@ class UserBoard {
    *
    * @param block to add to grid
    * @param count to indicate the position of the block on the grid
+   * @param is_adding_blocks to indicate whether we're removing or adding a block to a grid
    * @param increment to indicate the size of the blocks
    */
-  void AddBlockToGrid(BlockSet &block, ci::vec2 &top_left);
+  void AddOrRemoveBlock(BlockSet &block, ci::vec2 &top_left, bool is_adding_blocks);
 };
 
 }  // namespace tetris

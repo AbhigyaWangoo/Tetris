@@ -41,7 +41,7 @@ class TetrisApp : public ci::app::App {
   tetris::visualizer::BoardCanvas canvas_;
   BlockSet current_block_;
   bool has_selected_block_ = false;
-  bool is_live_game = true;
+  bool is_live_game_ = true;
 };
 
 }  // namespace visualizer
