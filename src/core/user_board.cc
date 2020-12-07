@@ -25,7 +25,8 @@ void tetris::UserBoard::GenerateUserBlocks() {
 }
 
 void tetris::UserBoard::AddOrRemoveBlock(tetris::BlockSet& block,
-                                       ci::vec2& top_left, bool is_adding_blocks) {
+                                         ci::vec2& top_left,
+                                         bool is_adding_blocks) {
   while (top_left.x + block.getBlockShape().x > grid_[0].size()) {
     std::vector<bool> row;
 
@@ -56,20 +57,18 @@ void tetris::UserBoard::RemoveBlock(tetris::BlockSet& block_set) {
   ci::vec2 block_top_left = block_set.getBlockSetTopLeft();
   BlockSet new_blockset;
   std::vector<BlockSet> new_user_blocks;
-  bool has_replaced = false;
 
   AddOrRemoveBlock(block_set, block_top_left, false);
   new_blockset.InitializeBlock();
 
-  for (const BlockSet &block: user_blocks_) {
-    if (block_set == block && !has_replaced) {
+  for (size_t i = 0; i < kUserBlockCount; i++) {
+    if (block_set == user_blocks_[i] && block_top_left == user_blocks_[i].getBlockSetTopLeft()) {
       new_blockset.setBlockSetTopLeft(block_top_left);
       new_user_blocks.push_back(new_blockset);
 
       AddOrRemoveBlock(new_blockset, block_top_left, true);
-      has_replaced = true;
     } else {
-      new_user_blocks.push_back(block);
+      new_user_blocks.push_back(user_blocks_[i]);
     }
   }
 
