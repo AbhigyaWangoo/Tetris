@@ -55,7 +55,7 @@ list(APPEND CORE_SOURCE_FILES src/core/block_set.cc
                               src/core/user_board.cc)
 
 list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} src/visualizer/tetris_app.cc)
-list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} src/visualizer/tetris_canvas.cc)
+list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} src/visualizer/canvas.cc)
 
 list(APPEND TEST_FILES tests/board_placement_test.cc)
 list(APPEND TEST_FILES tests/particle_feature_test.cc)

@@ -8,7 +8,7 @@
 
 #include "core/block_set.h"
 #include "core/board.h"
-#include "visualizer/tetris_canvas.h"
+#include "visualizer/canvas.h"
 
 size_t increment = 66;
 
@@ -16,7 +16,7 @@ TEST_CASE("BlockSet initializations") {
   tetris::UserBoard user_board;
   bool passing_condition;
 
-  SECTION("Blocks are generated correctly") {
+  SECTION("Blocks are generated correctly according to kUserBoardSize") {
     user_board.GenerateUserBlocks();
 
     passing_condition = user_board.getUserBlocks().size() == 3;
@@ -40,9 +40,21 @@ TEST_CASE("BlockSet initializations") {
     tetris::BlockSet front = board.getUserBoard().getUserBlocks().front();
     board.PlaceBlock(front, coordinate, increment);
 
-    user_board.GenerateUserBlocks();
+    passing_condition = board.getUserBoard().getUserBlocks().size() == 3;
+    REQUIRE(passing_condition);
+  }
 
-    passing_condition = user_board.getUserBlocks().size() == 3;
+  SECTION("Block lengths are never past half of the board size") {
+    tetris::Board board;
+
+    passing_condition = true;
+    for (const tetris::BlockSet &block_set: board.getUserBoard().getUserBlocks()) {
+      if (block_set.getBlockShape().x > tetris::kBoardSize / 2 || block_set.getBlockShape().x > tetris::kBoardSize / 2 ) {
+        passing_condition = false;
+        break;
+      }
+    }
+
     REQUIRE(passing_condition);
   }
 }
@@ -173,9 +185,27 @@ TEST_CASE("User Clicking") {
                                        coordinate, increment),
                       std::runtime_error);
   }
+}
 
-  SECTION("User Clicking pointless after endgame") {
+TEST_CASE("Tracking scoring") {
+  tetris::visualizer::BoardCanvas canvas;
+  tetris::Board board;
+  tetris::BlockSet three_by_three;
+
+  SECTION("Clearing a row/column increases the score by one") {
+    ci::vec2 first_position = ci::vec2(141,555);
+    board.UpdateBoard();
+
+    canvas = tetris::visualizer::BoardCanvas(board);
+
+    canvas.SelectBlock(first_position);
+//    board.PlaceBlock(canvas.getCurrentBlock(),)
+
+    REQUIRE(true);
+  }
+
+  SECTION("Clearing multiple rows/columns increases the score by the amount cleared") {
     // TODO
-    //tetris::BlockSet current_blockset = canvas.getCurrentBlock();
+    REQUIRE(true);
   }
 }

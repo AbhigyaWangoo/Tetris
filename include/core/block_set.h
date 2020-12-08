@@ -58,16 +58,18 @@ class BlockSet {
   void setBlockSetTopLeft(const ci::vec2& blockSetTopLeft);
 
   /**
-   * Overloaded operator to check for a block set existing within the user_board_
+   * Overloaded operator to check for a block set existing within the
+   * user_board_
    *
-   * @param rhs block set to compare with lhs
-   * @param lhs block set to compare with rhs
+   * @param r_block_set block set to compare with l_block_set
+   * @param l_block_set block set to compare with r_block_set
    * @return whether the two are equal or not
    */
-  friend bool operator==(const BlockSet& rhs, const BlockSet& lhs);
+  friend bool operator==(const BlockSet& r_block_set,
+                         const BlockSet& l_block_set);
 
  private:
-  ci::vec2 block_shape_ = ci::vec2(0,0);
+  ci::vec2 block_shape_ = ci::vec2(0, 0);
   ci::vec2 block_set_top_left;
   bool is_square_;
 };

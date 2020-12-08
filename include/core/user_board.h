@@ -10,31 +10,41 @@
 #include "block_set.h"
 
 namespace tetris {
+
+/**
+ * Global variables
+ */
 const static double kWindowWidth = 600;
 const static double kWindowLength = 1000;
-const ci::vec2 kTopLeft = ci::vec2(kWindowWidth / 6,kWindowWidth / 6);
-const ci::vec2 kBottomRight = ci::vec2(kWindowWidth * 5 / 6,kWindowWidth * 5 / 6);
+const ci::vec2 kTopLeft = ci::vec2(kWindowWidth / 6, kWindowWidth / 6);
+const ci::vec2 kBottomRight =
+    ci::vec2(kWindowWidth * 5 / 6, kWindowWidth * 5 / 6);
 static size_t increment_ = (kBottomRight.x - kTopLeft.x) / kBoardSize;
+
 /**
- * Class representing the blocks available to the user
+ * Class representing the block sets available to the user
  */
 class UserBoard {
  public:
-  UserBoard();
   /**
-   * Generates the blocks for the player to use
+   * Empty constructor for the UserBoard, initializes empty grid
+   */
+  UserBoard();
+
+  /**
+   * Generates the block sets for the player to use
    */
   void GenerateUserBlocks();
 
   /**
-   * Finds the grid values of the user blocks
+   * Finds the grid values of the user block sets
    *
-   * @return grid of the user blocks
+   * @return grid of the user block sets
    */
   const std::vector<std::vector<bool>> &getGrid() const;
 
   /**
-   * Returns the set of blocks belonging to the user
+   * Returns the set of block sets belonging to the user
    *
    * @return vector of BlockSets
    */
@@ -68,6 +78,11 @@ class UserBoard {
    */
   const glm::vec2 &getBottomRight() const;
 
+  /**
+   * Removes a particular block from the user_blocks_
+   *
+   * @param block_set to remove
+   */
   void RemoveBlock(BlockSet &block_set);
 
  private:
@@ -77,14 +92,16 @@ class UserBoard {
   std::vector<std::vector<bool>> grid_;
 
   /**
-   * Adds a block to the visual representation of the user's blocks
+   * Adds a block_set to the visual representation of the user's block_set sets
    *
-   * @param block to add to grid
-   * @param count to indicate the position of the block on the grid
-   * @param is_adding_blocks to indicate whether we're removing or adding a block to a grid
-   * @param increment to indicate the size of the blocks
+   * @param block_set to add to grid
+   * @param is_adding_blocks to indicate whether we're removing or adding a
+   * block_set to a grid
+   * @param is_adding_blocks to determine whether we're adding to or removing
+   * from the grid
    */
-  void AddOrRemoveBlock(BlockSet &block, ci::vec2 &top_left, bool is_adding_blocks);
+  void AddOrRemoveBlockFromGrid(BlockSet &block_set, ci::vec2 &top_left,
+                                bool is_adding_blocks);
 };
 
 }  // namespace tetris

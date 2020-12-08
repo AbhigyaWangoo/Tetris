@@ -19,15 +19,15 @@ void tetris::UserBoard::GenerateUserBlocks() {
       current_block.InitializeBlock();
       user_blocks_.push_back(current_block);
 
-      AddOrRemoveBlock(current_block, top_left_block, true);
+      AddOrRemoveBlockFromGrid(current_block, top_left_block, true);
     }
   }
 }
 
-void tetris::UserBoard::AddOrRemoveBlock(tetris::BlockSet& block,
-                                         ci::vec2& top_left,
-                                         bool is_adding_blocks) {
-  while (top_left.x + block.getBlockShape().x > grid_[0].size()) {
+void tetris::UserBoard::AddOrRemoveBlockFromGrid(tetris::BlockSet& block_set,
+                                                 ci::vec2& top_left,
+                                                 bool is_adding_blocks) {
+  while (top_left.x + block_set.getBlockShape().x > grid_[0].size()) {
     std::vector<bool> row;
 
     for (size_t j = 0; j < kBoardSize; j++) {
@@ -35,12 +35,12 @@ void tetris::UserBoard::AddOrRemoveBlock(tetris::BlockSet& block,
     }
   }
 
-  block.setBlockSetTopLeft(top_left);
+  block_set.setBlockSetTopLeft(top_left);
 
-  for (size_t i = 0; i < block.getBlockShape().x; i++) {
+  for (size_t i = 0; i < block_set.getBlockShape().x; i++) {
     grid_[top_left.y][top_left.x + i] = is_adding_blocks;
 
-    if (block.isSquare()) {
+    if (block_set.isSquare()) {
       for (size_t j = 1; j < i + 1; j++) {
         grid_[top_left.y + j][top_left.x + i] = is_adding_blocks;
         grid_[top_left.y + i][top_left.x + j] = is_adding_blocks;
@@ -48,7 +48,7 @@ void tetris::UserBoard::AddOrRemoveBlock(tetris::BlockSet& block,
     }
   }
 
-  for (size_t j = 0; j < block.getBlockShape().y; j++) {
+  for (size_t j = 0; j < block_set.getBlockShape().y; j++) {
     grid_[top_left.y + j][top_left.x] = is_adding_blocks;
   }
 }
@@ -58,15 +58,16 @@ void tetris::UserBoard::RemoveBlock(tetris::BlockSet& block_set) {
   BlockSet new_blockset;
   std::vector<BlockSet> new_user_blocks;
 
-  AddOrRemoveBlock(block_set, block_top_left, false);
+  AddOrRemoveBlockFromGrid(block_set, block_top_left, false);
   new_blockset.InitializeBlock();
 
   for (size_t i = 0; i < kUserBlockCount; i++) {
-    if (block_set == user_blocks_[i] && block_top_left == user_blocks_[i].getBlockSetTopLeft()) {
+    if (block_set == user_blocks_[i] &&
+        block_top_left == user_blocks_[i].getBlockSetTopLeft()) {
       new_blockset.setBlockSetTopLeft(block_top_left);
       new_user_blocks.push_back(new_blockset);
 
-      AddOrRemoveBlock(new_blockset, block_top_left, true);
+      AddOrRemoveBlockFromGrid(new_blockset, block_top_left, true);
     } else {
       new_user_blocks.push_back(user_blocks_[i]);
     }

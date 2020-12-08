@@ -6,37 +6,54 @@
 
 namespace tetris {
 
-void Board::PlaceBlock(BlockSet& block, glm::vec2& top_left, size_t increment) {
+Board::Board() {
+  std::vector<bool> row;
+
+  for (size_t j = 0; j < kBoardSize; j++) {
+    row.push_back(false);
+  }
+
+  for (size_t i = 0; i < kBoardSize; i++) {
+    grid_.push_back(row);
+  }
+}
+
+const UserBoard& Board::getUserBoard() const {
+  return user_board_;
+}
+
+void Board::PlaceBlock(BlockSet& block_set, glm::vec2& top_left,
+                       size_t increment) {
   glm::vec2 updated_position = ConvertBoardCoordinate(top_left, increment);
-  BlockSet block_set_to_remove = block;
+  BlockSet block_set_to_remove = block_set;
 
-  if (IsOverlapping(block, updated_position)) {
-    throw std::runtime_error("The block is overlapping with others");
+  if (IsOverlapping(block_set, updated_position)) {
+    throw std::runtime_error("The block_set is overlapping with others");
   } else if (std::find(user_board_.getUserBlocks().begin(),
-                user_board_.getUserBlocks().end(),
-                block) == user_board_.getUserBlocks().end()) {
+                       user_board_.getUserBlocks().end(),
+                       block_set) == user_board_.getUserBlocks().end()) {
     throw std::runtime_error(
-        "The block you clicked on wasn't part of the available blocks");
+        "The block_set you clicked on wasn't part of the available blocks");
   } else {
-    block.setBlockSetTopLeft(updated_position);
-    for (size_t i = 0; i < block.getBlockShape().x; i++) {
-      board_[updated_position.x][updated_position.y + i] = true;
+    block_set.setBlockSetTopLeft(updated_position);
 
-      if (block.isSquare()) {
+    for (size_t i = 0; i < block_set.getBlockShape().x; i++) {
+      grid_[updated_position.x][updated_position.y + i] = true;
+
+      if (block_set.isSquare()) {
         for (size_t j = 1; j < i + 1; j++) {
-          board_[updated_position.x + j][updated_position.y + i] = true;
-          board_[updated_position.x + i][updated_position.y + j] = true;
+          grid_[updated_position.x + j][updated_position.y + i] = true;
+          grid_[updated_position.x + i][updated_position.y + j] = true;
         }
       }
     }
 
-    for (size_t j = 0; j < block.getBlockShape().y; j++) {
-      board_[updated_position.x + j][updated_position.y] = true;
+    for (size_t j = 0; j < block_set.getBlockShape().y; j++) {
+      grid_[updated_position.x + j][updated_position.y] = true;
     }
 
     user_board_.RemoveBlock(block_set_to_remove);
   }
-
 }
 
 void Board::UpdateBoard() {
@@ -45,8 +62,10 @@ void Board::UpdateBoard() {
   for (size_t i = 0; i < kBoardSize; i++) {
     if (CheckFullRow(i, true)) {
       RemoveRow(i, true);
+      player_score_++;
     } else if (CheckFullRow(i, false)) {
       RemoveRow(i, false);
+      player_score_++;
     }
   }
 
@@ -64,20 +83,20 @@ bool Board::HasLostGame() {
   return true;
 }
 
-bool Board::IsOverlapping(const BlockSet& block, ci::vec2 top_left) {
+bool Board::IsOverlapping(const BlockSet& block, ci::vec2& top_left) {
   if (top_left.x + block.getBlockShape().y > kBoardSize ||
       top_left.y + block.getBlockShape().x > kBoardSize || top_left.x < 0 ||
       top_left.y < 0)
     return true;
 
   for (size_t i = top_left.y; i < block.getBlockShape().x + top_left.y; i++) {
-    if (board_[top_left.x][i]) {
+    if (grid_[top_left.x][i]) {
       return true;
     }
 
     if (block.isSquare() && i > top_left.y) {
       for (size_t j = 1; j < block.getBlockShape().y; j++) {
-        if (board_[top_left.x + j][i]) {
+        if (grid_[top_left.x + j][i]) {
           return true;
         }
       }
@@ -85,7 +104,7 @@ bool Board::IsOverlapping(const BlockSet& block, ci::vec2 top_left) {
   }
 
   for (size_t i = top_left.x; i < block.getBlockShape().y + top_left.x; i++) {
-    if (board_[i][top_left.y]) {
+    if (grid_[i][top_left.y]) {
       return true;
     }
   }
@@ -95,8 +114,8 @@ bool Board::IsOverlapping(const BlockSet& block, ci::vec2 top_left) {
 
 bool Board::CheckFullRow(size_t row, bool is_horizontal) {
   for (size_t i = 0; i < kBoardSize; i++) {
-    if ((!board_[row][i] && is_horizontal) ||
-        (!board_[i][row] && !is_horizontal)) {
+    if ((!grid_[row][i] && is_horizontal) ||
+        (!grid_[i][row] && !is_horizontal)) {
       return false;
     }
   }
@@ -107,30 +126,14 @@ bool Board::CheckFullRow(size_t row, bool is_horizontal) {
 void Board::RemoveRow(size_t row, bool is_horizontal) {
   for (size_t i = 0; i < kBoardSize; i++) {
     if (is_horizontal) {
-      board_[row][i] = false;
+      grid_[row][i] = false;
     } else {
-      board_[i][row] = false;
+      grid_[i][row] = false;
     }
   }
 }
 const std::vector<std::vector<bool>>& Board::getBoard() const {
-  return board_;
-}
-
-Board::Board() {
-  std::vector<bool> row;
-
-  for (size_t j = 0; j < kBoardSize; j++) {
-    row.push_back(false);
-  }
-
-  for (size_t i = 0; i < kBoardSize; i++) {
-    board_.push_back(row);
-  }  // TODO Optimize
-}
-
-const UserBoard& Board::getUserBoard() const {
-  return user_board_;
+  return grid_;
 }
 
 void Board::setUserBoardCoordinates(ci::vec2& top_left,
@@ -161,7 +164,11 @@ bool Board::HasAvailablePlacement(const BlockSet& block_set) {
     }
   }
 
-  return false;  /// TODO CHANGE THIS
+  return false;
+}
+
+const size_t& Board::getPlayerScore() const {
+  return player_score_;
 }
 
 }  // namespace tetris

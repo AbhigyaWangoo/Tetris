@@ -1,14 +1,15 @@
 #pragma once
 
 #include "../../../../include/glm/vec2.hpp"
+#include "canvas.h"
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "tetris_canvas.h"
 
 namespace tetris {
 
 namespace visualizer {
+
 /**
  * Simulates a set of particles bouncing around in a box
  */
