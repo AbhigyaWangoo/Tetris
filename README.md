@@ -1,6 +1,6 @@
 # "Drag" Tetris 
   
-  This is a cinder framework implementation of the game, tetris. Although the game is not a play-by-play of the original game, users can still place blocks to clear rows. 
+  This is an implementation of a variant of the game, tetris, using the cinder framework. Although the game is not a play-by-play of the original game, users can still place blocks to clear rows. 
   
   In this implementation, users will be given a 6 x 6 board with three "block sets" at the bottom of the board. Players will be able to click on a block, then click on the top left tile on the board they want to place the block on. Doing so will place that block on the board and replace the previous block with a new one.
   
