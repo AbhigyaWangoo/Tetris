@@ -13,7 +13,7 @@ TEST_CASE("BlockSet initializations") {
   tetris::UserBoard user_board;
   bool passing_condition;
 
-  SECTION("Blocks are generated correctly") {
+  SECTION("Blocks are generated correctly according to kUserBoardSize") {
     user_board.GenerateUserBlocks();
 
     passing_condition = user_board.getUserBlocks().size() == 3;
@@ -28,89 +28,31 @@ TEST_CASE("BlockSet initializations") {
     REQUIRE(passing_condition);
   }
 
-  SECTION("No blocks generated if there aren't 3") {
-    user_board.GenerateUserBlocks();
-
+  SECTION("blocks generated if there aren't 3") {
     tetris::Board board;
-    glm::vec2 coordinate = glm::vec2(0, 0);
+    glm::vec2 coordinate = glm::vec2(141, 141);
+    size_t increment = 66;
 
-    board.PlaceBlock(user_board.getUserBlocks().front(), coordinate);
+    board.UpdateBoard();
 
-    user_board.GenerateUserBlocks();
+    tetris::BlockSet front = board.getUserBoard().getUserBlocks().front();
+    board.PlaceBlock(front, coordinate, increment);
 
-    passing_condition = user_board.getUserBlocks().size() == 2;
-    REQUIRE(passing_condition);
-  }
-}
-
-TEST_CASE("Placing blocks") {
-  tetris::Board board;
-  tetris::BlockSet block;
-  tetris::UserBoard user_board;
-  bool passing_condition = false;
-
-  SECTION("Placing block properly in spot") {
-    user_board.GenerateUserBlocks();
-    block = user_board.getUserBlocks().front();
-    ci::vec2 coordinate = ci::vec2(0, 0);
-
-    board.PlaceBlock(block, coordinate);
-
-    passing_condition = board.getBoard()[0][0] &&
-                        board.getBoard()[block.getBlockShape().x][0] &&
-                        board.getBoard()[0][block.getBlockShape().y];
+    passing_condition = board.getUserBoard().getUserBlocks().size() == 3;
     REQUIRE(passing_condition);
   }
 
-  SECTION("Placing 2 adjacent blocks properly in spot") {
-    tetris::BlockSet new_block;
+  SECTION("Block lengths are never past half of the board size") {
+    tetris::Board board;
 
-    block.InitializeBlock();
-    new_block.InitializeBlock(
-        
-        );
-
-    ci::vec2 coordinate = ci::vec2(0, 0);
-    ci::vec2 new_coordinate = ci::vec2(block.getBlockShape().x + 1, 0);
-
-    board.PlaceBlock(block, coordinate);
-    board.PlaceBlock(new_block, new_coordinate);
-
-    passing_condition = board.getBoard()[0][0] &&
-                        board.getBoard()[block.getBlockShape().x][0] &&
-                        board.getBoard()[0][block.getBlockShape().y] &&
-                        board.getBoard()[block.getBlockShape().x + 1][0];
+    passing_condition = true;
+    for (const tetris::BlockSet &block_set: board.getUserBoard().getUserBlocks()) {
+      if (block_set.getBlockShape().x > tetris::kBoardSize / 2 || block_set.getBlockShape().x > tetris::kBoardSize / 2 ) {
+        passing_condition = false;
+        break;
+      }
+    }
 
     REQUIRE(passing_condition);
-  }
-
-  SECTION("Placing blocks properly in overlapped spot") {
-    user_board.GenerateUserBlocks();
-    block = user_board.getUserBlocks().front();
-    tetris::BlockSet new_block = user_board.getUserBlocks().back();
-    ;
-
-    ci::vec2 coordinate = ci::vec2(0, 0);
-
-    board.PlaceBlock(block, coordinate);
-
-    REQUIRE_THROWS_AS(board.PlaceBlock(new_block, coordinate),
-                      std::runtime_error);
-  }
-
-  SECTION("Placing blocks properly in out of bounds negative spot") {
-    user_board.GenerateUserBlocks();
-    block = user_board.getUserBlocks().front();
-    ci::vec2 coordinate = ci::vec2(-tetris::kBoardSize, 0);
-
-    REQUIRE_THROWS_AS(board.PlaceBlock(block, coordinate), std::runtime_error);
-  }
-
-  SECTION("Placing blocks properly in out of bounds positive spot") {
-    user_board.GenerateUserBlocks();
-    block = user_board.getUserBlocks().front();
-    ci::vec2 coordinate = ci::vec2(tetris::kBoardSize + 1, 0);
-
-    REQUIRE_THROWS_AS(board.PlaceBlock(block, coordinate), std::runtime_error);
   }
 }

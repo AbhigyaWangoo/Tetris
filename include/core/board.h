@@ -11,20 +11,24 @@
 #include "user_board.h"
 
 namespace tetris {
+
 /**
  * Representation of a Board
  */
 class Board {
  public:
+  /**
+   * Empty constructor
+   */
   Board();
 
   /**
-   * Places the given block in a certain area
+   * Places the given block_set set in a certain area
    *
-   * @param block to place
-   * @param top_left coordinate of the Board for the block placement
+   * @param block_set to place
+   * @param top_left coordinate of the Board for the block_set placement
    */
-  void PlaceBlock(const BlockSet &block, ci::vec2 &top_left);
+  void PlaceBlock(BlockSet &block_set, ci::vec2 &top_left, size_t increment);
 
   /**
    * Updates Board to remove rows and columns, check for game's end, and new
@@ -40,13 +44,32 @@ class Board {
   const std::vector<std::vector<bool>> &getBoard() const;
 
   /**
-   * Returns the users' available shaded blocks
+   * Returns the user board's complete object
    *
-   * @return user_blocks_' boolean grid
+   * @return the user_board grid
    */
-  const std::vector<std::vector<bool>> &getUserBoard() const;
+  const UserBoard &getUserBoard() const;
+
+  /**
+   * Sets the user board's coordinates to the proper value
+   *
+   * @param top_left coordinate to set
+   * @param bottom_right coordinate to set
+   */
+  void setUserBoardCoordinates(ci::vec2 &top_left, ci::vec2 &bottom_right);
+
+  /**
+   * Returns the player's current score
+   *
+   * @return the size_t value of the player's score
+   */
+  const size_t &getPlayerScore() const;
 
  private:
+  std::vector<std::vector<bool>> grid_;
+  tetris::UserBoard user_board_;
+  size_t player_score_;
+
   /**
    * Checks whether the player has lost the game, i.e cannot place any blocks
    * down anymore
@@ -62,7 +85,7 @@ class Board {
    * @param top_left coordinate of the block placement to check for
    * @return whether the placement will overlap or not
    */
-  bool IsOverlapping(const BlockSet &block, ci::vec2 top_left);
+  bool IsOverlapping(const BlockSet &block, ci::vec2 &top_left);
 
   /**
    * Checks whether a row is full or not
@@ -81,8 +104,24 @@ class Board {
    */
   void RemoveRow(size_t row, bool is_horizontal);
 
-  std::vector<std::vector<bool>> board_;
-  tetris::UserBoard user_board_;
+  /**
+   * Converts the user's clicked mouse position to proper board size coordinates
+   *
+   * @param board_coordinate to convert
+   * @param increment of the board we're rendering
+   * @return The new coordinate to manage with a 2d array
+   */
+  glm::vec2 ConvertBoardCoordinate(glm::vec2 &board_coordinate,
+                                   size_t increment);
+
+  /**
+   * Checks to see whether the current block set has any available placements on
+   * the board
+   *
+   * @param block_set to check
+   * @return whether the set can be placed or not
+   */
+  bool HasAvailablePlacement(const BlockSet &block_set);
 };
 
 }  // namespace tetris

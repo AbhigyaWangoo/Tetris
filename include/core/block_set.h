@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 #include <string>
 
 #include "../../../../include/glm/vec2.hpp"
@@ -24,32 +25,11 @@ const int kUserBlockCount = 3;
 class BlockSet {
  public:
   /**
-   * Determines whether the current block can be created
-   *
-   * @return whether the current block is valid or not
-   */
-  bool IsValidBlock() const;
-
-  /**
-   * Sets the block's square status
-   *
-   * @param isSquare to assign the block's status
-   */
-  void setIsSquare(bool isSquare);
-
-  /**
    * Finds the shape of the block
    *
    * @return what shape the block is in
    */
   const ci::vec2& getBlockShape() const;
-
-  /**
-   * Gets the coordinate of the block
-   *
-   * @return the coordinate of the block
-   */
-  const glm::vec2& getBlockCoordinate() const;
 
   /**
    * Initializes the block according to the Board's size
@@ -64,16 +44,33 @@ class BlockSet {
   bool isSquare() const;
 
   /**
-   * Sets the block's incremental value to the one provided
+   * Finds the top left coordinate of the block set
    *
-   * @param increment to specify the increment size
+   * @return the top left coordinate
    */
-  void setIncrement(const size_t& increment);
+  const glm::vec2& getBlockSetTopLeft() const;
+
+  /**
+   * Sets the top left coordinate of the block
+   *
+   * @param blockSetTopLeft to set
+   */
+  void setBlockSetTopLeft(const ci::vec2& blockSetTopLeft);
+
+  /**
+   * Overloaded operator to check for a block set existing within the
+   * user_board_
+   *
+   * @param r_block_set block set to compare with l_block_set
+   * @param l_block_set block set to compare with r_block_set
+   * @return whether the two are equal or not
+   */
+  friend bool operator==(const BlockSet& r_block_set,
+                         const BlockSet& l_block_set);
 
  private:
-  ci::vec2 block_shape_;
-  ci::vec2 block_top_left_;
-  size_t increment;
+  ci::vec2 block_shape_ = ci::vec2(0, 0);
+  ci::vec2 block_set_top_left;
   bool is_square_;
 };
 

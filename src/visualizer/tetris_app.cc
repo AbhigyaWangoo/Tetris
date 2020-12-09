@@ -7,40 +7,50 @@ void TetrisApp::draw() {
   ci::gl::clear(background_color);
   setWindowSize(kWindowWidth, kWindowLength);
   canvas_ = BoardCanvas(board_);
-  
+
   canvas_.RenderBoard();
 
   ci::gl::drawStringCentered("Tetris",
-                             glm::vec2(kWindowWidth / 2, kWindowLength / 11),
+                             glm::vec2(kWindowWidth / 2, kWindowLength / 15),
                              ci::Color("white"));
+  if (!is_live_game_) {
+    ci::gl::drawStringCentered("GAME OVER",
+                               glm::vec2(kWindowWidth / 2, kWindowLength / 20),
+                               ci::Color("white"));
+  }
 }
 
 void TetrisApp::setup() {
-  tetris::BlockSet block_set;
-  block_set.InitializeBlock();
-  ci::vec2 coord = ci::vec2(1, 1);
-
-  board_.PlaceBlock(block_set, coord);
-
-  canvas_ = BoardCanvas(
-      board_);  // TODO We need a way to update the board_ in the canvas with
-                // the board with the block above every time
 }
 
 void TetrisApp::update() {
   try {
     board_.UpdateBoard();
-  } catch (std::exception &e) {
-    e.what();
+  } catch (std::range_error &error) {
+    is_live_game_ = false;
+  } catch (std::runtime_error &error) {
+    std::cout << error.what();
   }
 }
 
 void TetrisApp::mouseDown(ci::app::MouseEvent event) {
-  if (!canvas_.HasSelectedBlock()) {
-    canvas_.SelectBlock(event);
-    // we're selecting a block rn
-  } else {
-    // we're placing a block rn
+  if (is_live_game_) {
+    ci::vec2 position = event.getPos();
+
+    try {
+      if (!has_selected_block_) {
+        canvas_.SelectBlock(position);
+        current_block_ = canvas_.getCurrentBlock();
+
+        has_selected_block_ = true;
+      } else {
+        board_.PlaceBlock(current_block_, position, kIncrement);
+
+        has_selected_block_ = false;
+      }
+    } catch (std::runtime_error &error) {
+      std::cout << error.what();
+    }
   }
 }
 
