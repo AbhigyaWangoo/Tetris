@@ -63,11 +63,6 @@ class BoardCanvas {
 
   /**
    * Renders all current blocks available to the user
-   *
-   * @param top_left coordinate of the board so the user blocks are displayed
-   * correctly
-   * @param bottom_right coordinate of the board so the user blocks are
-   * displayed correctly
    */
   void RenderUserBlocks();
 
@@ -84,7 +79,7 @@ class BoardCanvas {
   /**
    * Renders the grid for the player to play the game on
    */
-  void RenderGrid();
+  void RenderGrid() const;
 };
 }  // namespace visualizer
 }  // namespace tetris

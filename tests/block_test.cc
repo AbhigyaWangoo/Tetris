@@ -31,12 +31,11 @@ TEST_CASE("BlockSet initializations") {
   SECTION("blocks generated if there aren't 3") {
     tetris::Board board;
     glm::vec2 coordinate = glm::vec2(141, 141);
-    size_t increment = 66;
 
     board.UpdateBoard();
 
     tetris::BlockSet front = board.getUserBoard().getUserBlocks().front();
-    board.PlaceBlock(front, coordinate, increment);
+    board.PlaceBlock(front, coordinate);
 
     passing_condition = board.getUserBoard().getUserBlocks().size() == 3;
     REQUIRE(passing_condition);

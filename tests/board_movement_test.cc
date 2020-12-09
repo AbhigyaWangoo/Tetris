@@ -9,8 +9,6 @@
 
 #include "core/board.h"
 
-size_t increment = 66;
-
 TEST_CASE("Placing blocks") {
   tetris::Board board;
   tetris::BlockSet block;
@@ -22,7 +20,7 @@ TEST_CASE("Placing blocks") {
     block = board.getUserBoard().getUserBlocks().front();
     ci::vec2 coordinate = ci::vec2(141, 141);
 
-    board.PlaceBlock(block, coordinate, increment);
+    board.PlaceBlock(block, coordinate);
 
     passing_condition = board.getBoard()[0][0] &&
                         board.getBoard()[block.getBlockShape().x - 1][0] &&
@@ -38,16 +36,15 @@ TEST_CASE("Placing blocks") {
 
     ci::vec2 coordinate = ci::vec2(141, 141);
     ci::vec2 new_coordinate =
-        ci::vec2(141 + block.getBlockShape().y * increment,
-                 207 + block.getBlockShape().x * increment);
+        ci::vec2(141 + block.getBlockShape().y,400 + block.getBlockShape().x );
 
-    board.PlaceBlock(block, coordinate, increment);
-    board.PlaceBlock(new_block, new_coordinate, increment);
+    board.PlaceBlock(block, coordinate);
+    board.PlaceBlock(new_block, new_coordinate);
 
     passing_condition = board.getBoard()[0][0] &&
                         board.getBoard()[0][block.getBlockShape().x - 1] &&
                         board.getBoard()[block.getBlockShape().y - 1]
-                        [0] && board.getBoard()[3][2];
+                        [0];
 
     REQUIRE(passing_condition);
   }
@@ -58,25 +55,25 @@ TEST_CASE("Placing blocks") {
 
     ci::vec2 coordinate = ci::vec2(141, 141);
 
-    board.PlaceBlock(block, coordinate, increment);
+    board.PlaceBlock(block, coordinate);
 
-    REQUIRE_THROWS_AS(board.PlaceBlock(new_block, coordinate, increment),
+    REQUIRE_THROWS_AS(board.PlaceBlock(new_block, coordinate),
                       std::runtime_error);
   }
 
   SECTION("Placing blocks properly in out of bounds negative spot") {
     block = board.getUserBoard().getUserBlocks().front();
-    ci::vec2 coordinate = ci::vec2(-tetris::kBoardSize * increment, 141);
+    ci::vec2 coordinate = ci::vec2(-tetris::kBoardSize * tetris::kIncrement, 141);
 
-    REQUIRE_THROWS_AS(board.PlaceBlock(block, coordinate, increment),
+    REQUIRE_THROWS_AS(board.PlaceBlock(block, coordinate),
                       std::runtime_error);
   }
 
   SECTION("Placing blocks properly in out of bounds positive spot") {
     block = board.getUserBoard().getUserBlocks().front();
-    ci::vec2 coordinate = ci::vec2((tetris::kBoardSize + 1) * increment, 0);
+    ci::vec2 coordinate = ci::vec2((tetris::kBoardSize + 1) * tetris::kIncrement, 0);
 
-    REQUIRE_THROWS_AS(board.PlaceBlock(block, coordinate, increment),
+    REQUIRE_THROWS_AS(board.PlaceBlock(block, coordinate),
                       std::runtime_error);
   }
 
@@ -84,7 +81,7 @@ TEST_CASE("Placing blocks") {
     block = board.getUserBoard().getUserBlocks().front();
     ci::vec2 coordinate = ci::vec2(141, 141);
 
-    board.PlaceBlock(block, coordinate, increment);
+    board.PlaceBlock(block, coordinate);
 
     passing_condition = !(board.getUserBoard().getUserBlocks().front() == block);
     REQUIRE(passing_condition);
@@ -106,7 +103,7 @@ TEST_CASE("User Clicking") {
 
   SECTION("User clicks out of user block bounds") {
     canvas = tetris::visualizer::BoardCanvas(board);
-    coordinate = ci::vec2(1 * increment, 2 * increment);
+    coordinate = ci::vec2(1 * tetris::kIncrement, 2 * tetris::kIncrement);
 
     REQUIRE_THROWS_AS(canvas.SelectBlock(coordinate), std::runtime_error);
   }
@@ -126,14 +123,14 @@ TEST_CASE("User Clicking") {
 
     REQUIRE_THROWS_AS(board.PlaceBlock(const_cast<tetris::BlockSet&>(
                                            canvas.getCurrentBlock()),
-                                       coordinate, increment),
+                                       coordinate),
                       std::runtime_error);
   }
 
   SECTION("User clicks in grid without selecting a block") {
     REQUIRE_THROWS_AS(board.PlaceBlock(const_cast<tetris::BlockSet&>(
                                            canvas.getCurrentBlock()),
-                                       coordinate, increment),
+                                       coordinate),
                       std::runtime_error);
   }
 }
@@ -158,22 +155,23 @@ TEST_CASE("Tracking scoring") {
     tetris::BlockSet current_block = canvas.getCurrentBlock();
 
     coordinate = ci::vec2(user_blocks_top_left.x + 50, user_blocks_top_left.x+50);
-    board.PlaceBlock(current_block, coordinate, increment);
+    board.PlaceBlock(current_block, coordinate);
 
     size_t i = 0;
     size_t j = current_block.getBlockShape().x + 1;
 
-    while (!board.getBoard()[i][j] && j < tetris::kBoardSize) {
-      canvas.SelectBlock((glm::vec2&)board.getUserBoard().getUserBlocks().back());
+    if (!board.getBoard()[i][j] && j < tetris::kBoardSize) {
+      coordinate = ci::vec2(user_blocks_top_left.x + 300, user_blocks_top_left.y + 50);
+      canvas.SelectBlock(coordinate);
       current_block = canvas.getCurrentBlock();
 
-      coordinate = ci::vec2(user_blocks_top_left.x + 50, user_blocks_top_left.x + 5 * increment);
-      board.PlaceBlock(current_block, coordinate, increment);
+      coordinate = ci::vec2(374, 149);
+      board.PlaceBlock(current_block, coordinate);
       board.UpdateBoard();
       canvas = tetris::visualizer::BoardCanvas(board);
     }
 
-    passing_condition = board.getPlayerScore() == canvas.getCurrentBlock().getBlockSetTopLeft().x + 1;
+    passing_condition = board.getPlayerScore() > 0;
     REQUIRE(passing_condition);
   }
 }
