@@ -28,7 +28,7 @@ class Board {
    * @param block_set to place
    * @param top_left coordinate of the Board for the block_set placement
    */
-  void PlaceBlock(BlockSet &block_set, ci::vec2 &top_left, size_t increment);
+  void PlaceBlock(BlockSet &block_set, ci::vec2 &top_left);
 
   /**
    * Updates Board to remove rows and columns, check for game's end, and new
@@ -85,7 +85,7 @@ class Board {
    * @param top_left coordinate of the block placement to check for
    * @return whether the placement will overlap or not
    */
-  bool IsOverlapping(const BlockSet &block, ci::vec2 &top_left);
+  bool IsOverlapping(const BlockSet &block, const ci::vec2 &top_left) const;
 
   /**
    * Checks whether a row is full or not
@@ -108,11 +108,9 @@ class Board {
    * Converts the user's clicked mouse position to proper board size coordinates
    *
    * @param board_coordinate to convert
-   * @param increment of the board we're rendering
    * @return The new coordinate to manage with a 2d array
    */
-  glm::vec2 ConvertBoardCoordinate(glm::vec2 &board_coordinate,
-                                   size_t increment);
+  glm::vec2 ConvertBoardCoordinate(const glm::vec2 &board_coordinate) const;
 
   /**
    * Checks to see whether the current block set has any available placements on
@@ -121,7 +119,7 @@ class Board {
    * @param block_set to check
    * @return whether the set can be placed or not
    */
-  bool HasAvailablePlacement(const BlockSet &block_set);
+  bool HasAvailablePlacement(const BlockSet &block_set) const;
 };
 
 }  // namespace tetris

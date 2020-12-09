@@ -67,7 +67,7 @@ void BoardCanvas::RenderBlocks(
   }
 }
 
-void BoardCanvas::RenderGrid() {
+void BoardCanvas::RenderGrid() const {
   for (size_t i = 0; i < kBoardSize + 1; i++) {
     ci::gl::drawLine(ci::vec2(kTopLeft.x + i * kIncrement, kTopLeft.y),
                      ci::vec2(kTopLeft.x + i * kIncrement, kBottomRight.y));

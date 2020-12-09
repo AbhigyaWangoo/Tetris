@@ -22,9 +22,8 @@ const UserBoard& Board::getUserBoard() const {
   return user_board_;
 }
 
-void Board::PlaceBlock(BlockSet& block_set, glm::vec2& top_left,
-                       size_t increment) {
-  glm::vec2 updated_position = ConvertBoardCoordinate(top_left, increment);
+void Board::PlaceBlock(BlockSet& block_set, glm::vec2& top_left) {
+  glm::vec2 updated_position = ConvertBoardCoordinate(top_left);
   BlockSet block_set_to_remove = block_set;
 
   if (IsOverlapping(block_set, updated_position)) {
@@ -83,7 +82,7 @@ bool Board::HasLostGame() {
   return true;
 }
 
-bool Board::IsOverlapping(const BlockSet& block, ci::vec2& top_left) {
+bool Board::IsOverlapping(const BlockSet& block, const ci::vec2& top_left) const {
   if (top_left.x + block.getBlockShape().y > kBoardSize ||
       top_left.y + block.getBlockShape().x > kBoardSize || top_left.x < 0 ||
       top_left.y < 0)
@@ -142,17 +141,16 @@ void Board::setUserBoardCoordinates(ci::vec2& top_left,
   user_board_.setBottomRight(bottom_right);
 }
 
-glm::vec2 Board::ConvertBoardCoordinate(glm::vec2& board_coordinate,
-                                        size_t increment) {
+glm::vec2 Board::ConvertBoardCoordinate(const glm::vec2& board_coordinate) const {
   glm::vec2 new_position;
   new_position =
-      ci::vec2(std::floor((board_coordinate.y - kTopLeft.y) / increment),
-               std::floor((board_coordinate.x - kTopLeft.x) / increment));
+      ci::vec2(std::floor((board_coordinate.y - kTopLeft.y) / kIncrement),
+               std::floor((board_coordinate.x - kTopLeft.x) / kIncrement));
 
   return new_position;
 }
 
-bool Board::HasAvailablePlacement(const BlockSet& block_set) {
+bool Board::HasAvailablePlacement(const BlockSet& block_set) const {
   ci::vec2 block_set_placement;
 
   for (size_t i = 0; i < kBoardSize; i++) {

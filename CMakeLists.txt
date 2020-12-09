@@ -57,8 +57,7 @@ list(APPEND CORE_SOURCE_FILES src/core/block_set.cc
 list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} src/visualizer/tetris_app.cc)
 list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} src/visualizer/canvas.cc)
 
-list(APPEND TEST_FILES tests/board_placement_test.cc)
-list(APPEND TEST_FILES tests/particle_feature_test.cc)
+list(APPEND TEST_FILES tests/board_movement_test.cc)
 list(APPEND TEST_FILES tests/block_test.cc)
 
 ci_make_app(
@@ -71,7 +70,7 @@ ci_make_app(
 ci_make_app(
         APP_NAME tetris-test
         CINDER_PATH ${CINDER_PATH}
-        SOURCES tests/board_placement_test.cc ${SOURCE_FILES} ${TEST_FILES}
+        SOURCES tests/board_movement_test.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES include
         LIBRARIES catch2
 )

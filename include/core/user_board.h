@@ -95,10 +95,9 @@ class UserBoard {
    * Adds a block_set to the visual representation of the user's block_set sets
    *
    * @param block_set to add to grid
+   * @param top_left to specify the top left of the block location to place or remove from
    * @param is_adding_blocks to indicate whether we're removing or adding a
    * block_set to a grid
-   * @param is_adding_blocks to determine whether we're adding to or removing
-   * from the grid
    */
   void AddOrRemoveBlockFromGrid(BlockSet &block_set, ci::vec2 &top_left,
                                 bool is_adding_blocks);
