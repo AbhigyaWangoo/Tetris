@@ -44,7 +44,7 @@ void TetrisApp::mouseDown(ci::app::MouseEvent event) {
 
         has_selected_block_ = true;
       } else {
-        board_.PlaceBlock(current_block_, position, increment_);
+        board_.PlaceBlock(current_block_, position, kIncrement);
 
         has_selected_block_ = false;
       }
